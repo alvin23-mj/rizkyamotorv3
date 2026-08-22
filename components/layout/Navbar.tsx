@@ -275,18 +275,16 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-22 sm:h-[96px] flex items-center justify-between py-3">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center group shrink-0 pr-4">
-            {settings?.logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={settings.logoUrl}
-                alt={settings.name || 'Logo Showroom'}
-                className="h-16 sm:h-[80px] lg:h-[86px] max-w-[320px] sm:max-w-[380px] object-contain transition-all mix-blend-multiply"
-              />
-            ) : (
-              <span className="text-[28px] sm:text-[32px] tracking-tight text-slate-900 group-hover:text-slate-700 transition-colors leading-none font-black">
-                {settings?.name || 'Rizkya Motor'}
-              </span>
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={settings?.logoUrl || '/logo.png'}
+              alt={settings?.name || 'Rizkya Motor'}
+              className="h-14 sm:h-[72px] lg:h-[78px] max-w-[280px] sm:max-w-[340px] object-contain transition-all mix-blend-multiply"
+              onError={(e) => {
+                // If logo fails, show text fallback
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
           </Link>
 
           {/* Center Search Input Bar */}
