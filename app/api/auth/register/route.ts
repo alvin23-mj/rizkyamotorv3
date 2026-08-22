@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { v4 as uuidv4 } from 'crypto';
 
 export async function POST(request: Request) {
   try {
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
       });
     } catch (prismaErr: any) {
       // Raw SQL Fallback if Prisma delegate is locked
-      const userId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `usr_${Date.now()}`;
+      const userId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       const now = new Date().toISOString();
       await prisma.$executeRawUnsafe(
         `INSERT INTO "User" ("id", "name", "email", "password", "role", "phone", "createdAt", "updatedAt") 
