@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
+const globalUsers = globalThis as unknown as { registeredUsersMap?: Record<string, any> };
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -16,9 +18,21 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Email dan password wajib diisi');
         }
 
-        let user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
+        const cleanEmail = credentials.email.trim().toLowerCase();
+
+        let user: any = null;
+        try {
+          user = await prisma.user.findUnique({
+            where: { email: cleanEmail },
+          });
+        } catch (e) {
+          // Ignore DB read error if any
+        }
+
+        // Check memory store for Vercel registered users
+        if (!user && globalUsers.registeredUsersMap?.[cleanEmail]) {
+          user = globalUsers.registeredUsersMap[cleanEmail];
+        }
 
         // Fallback for instant demo logins if user doesn't exist yet in database
         if (!user) {
@@ -45,14 +59,14 @@ export const authOptions: NextAuthOptions = {
             },
           };
 
-          const demoInfo = DEMO_ACCOUNTS[credentials.email];
+          const demoInfo = DEMO_ACCOUNTS[cleanEmail];
           if (demoInfo && (credentials.password === 'password123' || credentials.password.length > 0)) {
             try {
               const defaultPassword = await bcrypt.hash('password123', 10);
               user = await prisma.user.create({
                 data: {
                   name: demoInfo.name,
-                  email: credentials.email,
+                  email: cleanEmail,
                   password: defaultPassword,
                   role: demoInfo.role,
                   avatar: demoInfo.avatar,
@@ -60,9 +74,9 @@ export const authOptions: NextAuthOptions = {
               });
             } catch (err) {
               return {
-                id: `demo-${credentials.email}`,
+                id: `demo-${cleanEmail}`,
                 name: demoInfo.name,
-                email: credentials.email,
+                email: cleanEmail,
                 role: demoInfo.role,
                 avatar: demoInfo.avatar,
               };
@@ -117,5 +131,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET || 'super-secret-mobilku-key-12345',
+  secret: process.env.NEXTAUTH_SECRET || 'rizkya-motor-secret-key-2026',
 };
