@@ -295,6 +295,7 @@ export default function Navbar() {
           <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:flex items-center relative pr-6">
             <input
               type="text"
+              suppressHydrationWarning
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari berdasarkan merek, model (ex: Honda HRV, Innova)..."
