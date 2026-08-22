@@ -279,10 +279,12 @@ export default function Navbar() {
             <img
               src={settings?.logoUrl || '/logo.png'}
               alt={settings?.name || 'Rizkya Motor'}
-              className="h-14 sm:h-[72px] lg:h-[78px] max-w-[280px] sm:max-w-[340px] object-contain transition-all mix-blend-multiply"
+              className={`h-14 sm:h-[72px] lg:h-[78px] max-w-[280px] sm:max-w-[340px] object-contain transition-all ${
+                (!settings?.logoUrl || settings?.logoUrl === '/logo.png') ? 'mix-blend-multiply' : ''
+              }`}
               onError={(e) => {
-                // If logo fails, show text fallback
-                (e.target as HTMLElement).style.display = 'none';
+                // Fallback to default logo on image load error
+                (e.target as HTMLImageElement).src = '/logo.png';
               }}
             />
           </Link>
