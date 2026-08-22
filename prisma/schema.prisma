@@ -1,0 +1,237 @@
+// Prisma schema for Showroom Mobil Bekas
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String             @id @default(uuid())
+  name           String
+  email          String             @unique
+  password       String
+  role           String             @default("USER") // USER, ADMIN
+  phone          String?
+  avatar         String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  listings       CarListing[]       @relation("CreatedListings")
+  favorites      Favorite[]
+  comparisons    Comparison[]
+  sellSubmissions SellSubmission[]
+  testDriveBookings TestDriveBooking[]
+}
+
+model CarListing {
+  id             String             @id @default(uuid())
+  createdById    String
+  createdBy      User               @relation("CreatedListings", fields: [createdById], references: [id], onDelete: Cascade)
+  title          String
+  brand          String
+  model          String
+  year           Int
+  price          Float
+  mileage        Int
+  transmission   String             // Automatic, Manual
+  fuelType       String             // Pertalite/Bensin, Diesel, Hybrid, Electric
+  bodyType       String?            // SUV, Sedan, MPV, Hatchback, Crossover
+  seats          Int                @default(5)           // Jumlah Kapasitas Kursi (2, 4, 5, 7, 8 Kursi)
+  color          String
+  plateNumber    String?            @default("B 1234 RFS")
+  previousOwners Int                @default(1)
+  location       String             // Showroom Pusat, Branch Jakarta, etc.
+  description    String
+  features       String?            // JSON stringified list of features
+  status         String             @default("AVAILABLE") // AVAILABLE, BOOKED, SOLD
+  isVisible      Boolean            @default(true)        // Visibility toggle in user catalog
+  warrantyMonths Int                @default(12)          // Garansi Showroom (Bulan)
+  isCertified    Boolean            @default(true)        // Lulus 160 Titik Inspeksi
+  viewsCount     Int                @default(0)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  images         CarImage[]
+  favorites      Favorite[]
+  comparisons    Comparison[]
+  testDrives     TestDriveBooking[]
+}
+
+model CarImage {
+  id           String     @id @default(uuid())
+  carListingId String
+  carListing   CarListing @relation(fields: [carListingId], references: [id], onDelete: Cascade)
+  url          String
+  isPrimary    Boolean    @default(false)
+  order        Int        @default(0)
+}
+
+model SellSubmission {
+  id            String   @id @default(uuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  brand         String
+  model         String
+  year          Int
+  transmission  String
+  fuelType      String
+  mileage       Int
+  expectedPrice Float
+  city          String
+  description   String?
+  inspectionDate String?  // Tanggal & Hari Rencana Datang ke Showroom (H-1 minimal)
+  inspectionTime String?  // Jam Slot Kedatangan (cth: 09:00 - 10:30 WIB)
+  images        String?  // JSON stringified array foto unit
+  status        String   @default("PENDING") // PENDING, CONTACTED, INSPECTING, OFFERED, ACCEPTED, REJECTED
+  offerPrice    Float?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model TestDriveBooking {
+  id            String     @id @default(uuid())
+  carListingId  String
+  carListing    CarListing @relation(fields: [carListingId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  bookingDate   String
+  bookingTime   String
+  status        String     @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  notes         String?
+  createdAt     DateTime   @default(now())
+}
+
+model Favorite {
+  id           String     @id @default(uuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  carListingId String
+  carListing   CarListing @relation(fields: [carListingId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, carListingId])
+}
+
+model Comparison {
+  id           String     @id @default(uuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  carListingId String
+  carListing   CarListing @relation(fields: [carListingId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, carListingId])
+}
+
+model HeroBanner {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OperatingHour {
+  id        String   @id @default(uuid())
+  timeSlot  String   @unique
+  maxQuota  Int      @default(3)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShowroomClosure {
+  id         String   @id @default(uuid())
+  closedDate String   @unique // YYYY-MM-DD
+  reason     String
+  createdAt  DateTime @default(now())
+}
+
+model Brand {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  logoUrl     String?
+  description String?
+  order       Int        @default(0)
+  isFeatured  Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  models      CarModel[]
+}
+
+model CarModel {
+  id        String   @id @default(uuid())
+  brandId   String
+  brand     Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  name      String
+  bodyType  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([brandId, name])
+}
+
+model ShowroomSetting {
+  id                 String   @id @default(uuid())
+  name               String   @default("Rizkya Motor")
+  logoUrl            String?
+  address            String   @default("Jl. Raya Otomotif No. 88, Jakarta")
+  phone              String   @default("0812-9988-7766")
+  whatsapp           String   @default("6281299887766")
+  operatingHoursText String   @default("08:30 - 18:00 WIB")
+  heroHomeUrl        String?
+  heroCatalogUrl     String?
+  heroSellUrl        String?
+  heroScheduleUrl    String?
+  categoryBrandUrl    String?
+  categoryBodyUrl     String?
+  categoryCompareUrl  String?
+  categoryScheduleUrl String?
+  categoryEventUrl    String?
+  instagramUrl       String?
+  facebookUrl        String?
+  tiktokUrl          String?
+  youtubeUrl         String?
+  updatedAt          DateTime @updatedAt
+}
+
+model ShowroomLocation {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  city      String
+  phone     String?
+  mapUrl    String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  category    String
+  date        String
+  time        String
+  location    String
+  image       String
+  description String
+  badge       String?
+  isVisible   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
