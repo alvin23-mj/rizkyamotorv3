@@ -1,10 +1,9 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { ComparisonProvider } from '@/context/ComparisonContext';
 import PublicShell from '@/components/layout/PublicShell';
-
 import { FavoritesProvider } from '@/context/FavoritesContext';
 
 const spaceGrotesk = Space_Grotesk({
@@ -24,6 +23,22 @@ export const metadata: Metadata = {
     'kredit mobil dp ringan',
     'mobil bekas garansi 1 tahun',
   ],
+  applicationName: 'Rizkya Motor',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Rizkya Motor',
+  },
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
 };
 
 export default function RootLayout({
