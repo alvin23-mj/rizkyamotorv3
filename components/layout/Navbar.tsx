@@ -42,6 +42,7 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
   const [settings, setSettings] = useState<any>(null);
   const [locations, setLocations] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     fetch('/api/settings')
@@ -50,7 +51,8 @@ export default function Navbar() {
         if (data.settings) setSettings(data.settings);
         if (data.locations && Array.isArray(data.locations)) setLocations(data.locations);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setIsLoaded(true));
   }, []);
 
   useEffect(() => {
@@ -274,12 +276,14 @@ export default function Navbar() {
       <div className="bg-slate-100 border-b border-slate-200">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-22 sm:h-[96px] flex items-center justify-between py-3">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center group shrink-0 pr-4">
+          <Link href="/" className="flex items-center group shrink-0 pr-4 min-h-[56px] sm:min-h-[72px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={settings?.logoUrl || '/logo.png'}
               alt={settings?.name || 'Rizkya Motor'}
-              className="h-14 sm:h-[72px] lg:h-[78px] max-w-[280px] sm:max-w-[340px] object-contain transition-all mix-blend-multiply"
+              className={`h-14 sm:h-[72px] lg:h-[78px] max-w-[280px] sm:max-w-[340px] object-contain transition-opacity duration-300 mix-blend-multiply ${
+                isLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
               onError={(e) => {
                 // Fallback to default logo on image load error
                 (e.target as HTMLImageElement).src = '/logo.png';
