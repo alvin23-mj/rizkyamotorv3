@@ -1,13 +1,27 @@
 import { PrismaClient } from '@prisma/client';
+import path from 'path';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Check if cached instance is missing new models, recreate if needed
+function getDatabaseUrl() {
+  const envUrl = process.env.DATABASE_URL;
+  if (envUrl && !envUrl.startsWith('file:.')) {
+    return envUrl;
+  }
+  const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');
+  return `file:${dbPath}`;
+}
+
 let prismaInstance = globalForPrisma.prisma;
 if (!prismaInstance || !(prismaInstance as any).operatingHour || !(prismaInstance as any).carModel) {
   prismaInstance = new PrismaClient({
+    datasources: {
+      db: {
+        url: getDatabaseUrl(),
+      },
+    },
     log: ['query', 'error', 'warn'],
   });
 }
