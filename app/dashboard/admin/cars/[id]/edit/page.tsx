@@ -69,6 +69,7 @@ const PRESET_BODY_TYPES = [
   'Hatchback',
   'Crossover',
   'Coupe',
+  'Pick Up',
   'Convertible',
   'Roadster',
   'Van / Minibus',
@@ -93,6 +94,117 @@ export default function AdminCarEditPage({
   const [isCustomBodyType, setIsCustomBodyType] = useState(false);
   const [customBodyType, setCustomBodyType] = useState('');
   const [modelSuggestions, setModelSuggestions] = useState<any[]>([]);
+  const [isCustomModelInput, setIsCustomModelInput] = useState(false);
+
+  // Auto detect body type from model name or suggestions
+  const autoDetectBodyType = (modelName: string, suggestions: any[]) => {
+    if (!modelName) return null;
+    const match = suggestions.find(
+      (m) =>
+        m.name.toLowerCase() === modelName.toLowerCase() ||
+        modelName.toLowerCase().includes(m.name.toLowerCase())
+    );
+    if (match && match.bodyType) {
+      return match.bodyType;
+    }
+    const lowerModel = modelName.toLowerCase();
+    if (
+      lowerModel.includes('avanza') ||
+      lowerModel.includes('xenia') ||
+      lowerModel.includes('innova') ||
+      lowerModel.includes('veloz') ||
+      lowerModel.includes('ertiga') ||
+      lowerModel.includes('xpander') ||
+      lowerModel.includes('alphard') ||
+      lowerModel.includes('voxy') ||
+      lowerModel.includes('serena') ||
+      lowerModel.includes('stargazer') ||
+      lowerModel.includes('sigra') ||
+      lowerModel.includes('calya')
+    ) {
+      return 'MPV';
+    }
+    if (
+      lowerModel.includes('brio') ||
+      lowerModel.includes('yaris') ||
+      lowerModel.includes('baleno') ||
+      lowerModel.includes('ayla') ||
+      lowerModel.includes('agya') ||
+      lowerModel.includes('jazz')
+    ) {
+      return 'Hatchback';
+    }
+    if (
+      lowerModel.includes('fortuner') ||
+      lowerModel.includes('pajero') ||
+      lowerModel.includes('cr-v') ||
+      lowerModel.includes('crv') ||
+      lowerModel.includes('terios') ||
+      lowerModel.includes('rush') ||
+      lowerModel.includes('creta') ||
+      lowerModel.includes('palisade') ||
+      lowerModel.includes('santa fe') ||
+      lowerModel.includes('jimny')
+    ) {
+      return 'SUV';
+    }
+    if (
+      lowerModel.includes('hr-v') ||
+      lowerModel.includes('hrv') ||
+      lowerModel.includes('wr-v') ||
+      lowerModel.includes('wrv') ||
+      lowerModel.includes('raize') ||
+      lowerModel.includes('rocky') ||
+      lowerModel.includes('ioniq') ||
+      lowerModel.includes('xforce') ||
+      lowerModel.includes('cx-3')
+    ) {
+      return 'Crossover';
+    }
+    if (
+      lowerModel.includes('corolla') ||
+      lowerModel.includes('camry') ||
+      lowerModel.includes('civic') ||
+      lowerModel.includes('accord') ||
+      lowerModel.includes('city') ||
+      lowerModel.includes('320i') ||
+      lowerModel.includes('520i') ||
+      lowerModel.includes('c200') ||
+      lowerModel.includes('c300') ||
+      lowerModel.includes('e300')
+    ) {
+      return 'Sedan';
+    }
+    if (
+      lowerModel.includes('triton') ||
+      lowerModel.includes('hilux') ||
+      lowerModel.includes('pick up')
+    ) {
+      return 'Pick Up';
+    }
+    return null;
+  };
+
+  const handleModelSelect = (selectedModelName: string) => {
+    const detectedBody = autoDetectBodyType(selectedModelName, modelSuggestions);
+    const updatedBodyType = detectedBody || formData.bodyType || 'SUV';
+    setIsCustomBodyType(false);
+
+    setFormData((prev) => ({
+      ...prev,
+      model: selectedModelName,
+      bodyType: updatedBodyType,
+    }));
+  };
+
+  const handleBrandChange = (newBrand: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      brand: newBrand,
+      model: '',
+    }));
+    setIsCustomModelInput(false);
+  };
 
   const [formData, setFormData] = useState({
     id: '',
@@ -435,7 +547,7 @@ export default function AdminCarEditPage({
                   <div className="relative">
                     <select
                       value={formData.brand}
-                      onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                      onChange={(e) => handleBrandChange(e.target.value)}
                       className="w-full text-sm pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
                     >
                       <option value="Toyota">Toyota</option>
@@ -463,42 +575,66 @@ export default function AdminCarEditPage({
                     <label className="text-xs font-bold text-slate-800 uppercase tracking-wide">Model *</label>
                     {modelSuggestions.length > 0 && (
                       <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        {modelSuggestions.length} Draft Model {formData.brand}
+                        {modelSuggestions.length} Model {formData.brand} Tersedia
                       </span>
                     )}
                   </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      required
-                      list="edit-brand-model-list"
-                      value={formData.model}
-                      onChange={(e) => {
-                        const selectedVal = e.target.value;
-                        const match = modelSuggestions.find(
-                          (m) => m.name.toLowerCase() === selectedVal.toLowerCase()
-                        );
-                        if (match && match.bodyType) {
-                          setFormData({
-                            ...formData,
-                            model: selectedVal,
-                            bodyType: match.bodyType,
-                          });
-                        } else {
-                          setFormData({ ...formData, model: selectedVal });
-                        }
-                      }}
-                      placeholder={`Pilih / ketik model ${formData.brand}...`}
-                      className="w-full text-sm px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-semibold"
-                    />
-                    <datalist id="edit-brand-model-list">
-                      {modelSuggestions.map((m) => (
-                        <option key={m.id} value={m.name}>
-                          {m.name} ({m.bodyType || 'Mobil'})
-                        </option>
-                      ))}
-                    </datalist>
-                  </div>
+
+                  {!isCustomModelInput && modelSuggestions.length > 0 ? (
+                    <div className="relative">
+                      <select
+                        value={formData.model}
+                        onChange={(e) => {
+                          if (e.target.value === 'CUSTOM_MODEL') {
+                            setIsCustomModelInput(true);
+                            setFormData({ ...formData, model: '' });
+                          } else {
+                            handleModelSelect(e.target.value);
+                          }
+                        }}
+                        className="w-full text-sm pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-semibold appearance-none cursor-pointer text-slate-900"
+                      >
+                        <option value="">-- Pilih Model {formData.brand} --</option>
+                        {modelSuggestions.map((m) => (
+                          <option key={m.id} value={m.name}>
+                            {m.name} ({m.bodyType || 'Mobil'})
+                          </option>
+                        ))}
+                        <option value="CUSTOM_MODEL">+ Ketik Model Manual / Kustom...</option>
+                      </select>
+                      <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <div className="relative flex items-center">
+                        <input
+                          type="text"
+                          required
+                          list="edit-brand-model-list"
+                          value={formData.model}
+                          onChange={(e) => handleModelSelect(e.target.value)}
+                          placeholder={`Pilih / ketik model ${formData.brand}...`}
+                          className="w-full text-sm px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-semibold"
+                        />
+                        {modelSuggestions.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setIsCustomModelInput(false)}
+                            className="absolute right-2 px-2.5 py-1 text-[11px] font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 rounded-lg transition-colors cursor-pointer"
+                          >
+                            Pilih Dropdown
+                          </button>
+                        )}
+                      </div>
+                      <datalist id="edit-brand-model-list">
+                        {modelSuggestions.map((m) => (
+                          <option key={m.id} value={m.name}>
+                            {m.name} ({m.bodyType || 'Mobil'})
+                          </option>
+                        ))}
+                      </datalist>
+                    </div>
+                  )}
                 </div>
               </div>
 
