@@ -264,17 +264,9 @@ export default function AdminUsersPage() {
                       </td>
 
                       <td className="px-4 py-4 whitespace-nowrap">
-                        {isAdmin ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md font-bold bg-slate-900 text-white border border-slate-800 text-[11px]">
-                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>Administrator</span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md font-bold bg-slate-100 text-slate-700 border border-slate-200 text-[11px]">
-                            <User className="w-3.5 h-3.5 text-slate-500" />
-                            <span>Pengguna Biasa</span>
-                          </span>
-                        )}
+                        <span className="text-slate-700 font-medium">
+                          {isAdmin ? 'Administrator' : 'Pengguna Biasa'}
+                        </span>
                       </td>
 
                       <td className="px-4 py-4 whitespace-nowrap text-slate-600">
