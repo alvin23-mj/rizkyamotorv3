@@ -31,7 +31,7 @@ const DEFAULT_CATEGORY_CARDS = [
     title: 'Lihat Jadwal',
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop',
     desc: 'Jadwalkan kunjungan test drive dan janji temu dengan tim konsultan showroom kami.',
-    href: '/contact',
+    href: '/schedule',
   },
   {
     id: 'event',
