@@ -17,6 +17,8 @@ import {
   Eye,
   EyeOff,
   Upload,
+  MessageSquare,
+  Info,
 } from 'lucide-react';
 import PopUpAlert from '@/components/ui/PopUpAlert';
 
@@ -30,6 +32,7 @@ interface EventItem {
   image: string;
   description: string;
   badge?: string;
+  hasRegistration?: boolean;
   isVisible: boolean;
   order: number;
 }
@@ -45,12 +48,14 @@ export default function AdminEventsPage() {
 
   const [formData, setFormData] = useState({
     title: '',
+    category: 'Umum',
     date: '',
     time: '09.00 - 21.00 WIB',
     location: '',
     image: '',
     description: '',
     badge: 'Terdekat',
+    hasRegistration: true,
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -79,12 +84,14 @@ export default function AdminEventsPage() {
     setEditingEvent(null);
     setFormData({
       title: '',
+      category: 'Komunitas & Gathering',
       date: '',
       time: '09.00 - 21.00 WIB',
       location: 'Showroom Utama Rizkya Motor - Jl. Raya Otomotif No. 88, Jakarta',
       image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop',
       description: '',
       badge: 'Terdekat',
+      hasRegistration: true,
     });
     setIsModalOpen(true);
   };
@@ -93,12 +100,14 @@ export default function AdminEventsPage() {
     setEditingEvent(evt);
     setFormData({
       title: evt.title,
+      category: evt.category || 'Umum',
       date: evt.date,
       time: evt.time,
       location: evt.location,
       image: evt.image,
       description: evt.description,
       badge: evt.badge || '',
+      hasRegistration: evt.hasRegistration !== false,
     });
     setIsModalOpen(true);
   };
@@ -154,196 +163,154 @@ export default function AdminEventsPage() {
           isVisible: !evt.isVisible,
         }),
       });
-      if (res.ok) {
-        setAlert({
-          type: 'success',
-          message: evt.isVisible
-            ? 'Event berhasil disembunyikan.'
-            : 'Event sekarang ditampilkan di halaman publik.',
-        });
-        fetchEvents();
-      } else {
-        const err = await res.json();
-        setAlert({ type: 'error', message: err.error || 'Gagal mengubah visibilitas.' });
-      }
-    } catch (err) {
-      setAlert({ type: 'error', message: 'Terjadi kesalahan sistem.' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      setAlert({
+        type: 'success',
+        message: evt.isVisible
+          ? `Event "${evt.title}" disembunyikan dari halaman publik.`
+          : `Event "${evt.title}" sekarang tampil di publik.`,
+      });
+      fetchEvents();
+    } catch (err: any) {
+      setAlert({ type: 'error', message: err.message || 'Gagal mengubah visibilitas.' });
     }
   };
 
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus event "${title}"?`)) return;
+  const handleDelete = async (evt: EventItem) => {
+    if (!window.confirm(`Apakah Anda yakin ingin menghapus event "${evt.title}"?`)) return;
+
     try {
       const res = await fetch('/api/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'DELETE_EVENT', id }),
+        body: JSON.stringify({
+          action: 'DELETE_EVENT',
+          id: evt.id,
+        }),
       });
-      if (res.ok) {
-        setAlert({ type: 'success', message: 'Event berhasil dihapus.' });
-        fetchEvents();
-      } else {
-        const err = await res.json();
-        setAlert({ type: 'error', message: err.error || 'Gagal menghapus event.' });
-      }
-    } catch (err) {
-      setAlert({ type: 'error', message: 'Terjadi kesalahan saat menghapus data.' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      setAlert({ type: 'success', message: `Event "${evt.title}" berhasil dihapus.` });
+      fetchEvents();
+    } catch (err: any) {
+      setAlert({ type: 'error', message: err.message || 'Gagal menghapus event.' });
     }
   };
 
   const filteredEvents = events.filter((evt) => {
     const matchSearch =
       evt.title.toLowerCase().includes(search.toLowerCase()) ||
-      evt.location.toLowerCase().includes(search.toLowerCase()) ||
-      evt.description.toLowerCase().includes(search.toLowerCase());
+      evt.description.toLowerCase().includes(search.toLowerCase()) ||
+      evt.location.toLowerCase().includes(search.toLowerCase());
 
     const matchStatus =
       statusFilter === 'ALL' ||
-      (statusFilter === 'ACTIVE' && evt.isVisible) ||
+      (statusFilter === 'VISIBLE' && evt.isVisible) ||
       (statusFilter === 'HIDDEN' && !evt.isVisible);
 
     return matchSearch && matchStatus;
   });
 
-  const totalEvents = events.length;
-  const activeEvents = events.filter((e) => e.isVisible).length;
-  const hiddenEvents = events.filter((e) => !e.isVisible).length;
-
   return (
     <div className="w-full p-6 space-y-6">
-      {/* Header section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* PopUp Alert */}
+      {alert && <PopUpAlert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />}
+
+      {/* Top Header Controls (Matching cars/page.tsx design) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">
-            Kelola Event & Promo Showroom
+            Kelola Acara & Kegiatan Showroom
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Tambah, edit, dan atur jadwal acara pameran atau promo diskon yang tampil di halaman publik.
+            Tambah, sunting, atur mode pendaftaran WhatsApp, dan visibilitas kegiatan promo atau gathering showroom.
           </p>
         </div>
 
-        <button
-          onClick={openAddModal}
-          className="inline-flex items-center gap-2 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer shrink-0"
-        >
-          <PlusCircle className="w-5 h-5" />
-          <span>Tambah Event Baru</span>
-        </button>
-      </div>
-
-      {/* PopUp Toast Alert */}
-      {alert && (
-        <PopUpAlert
-          type={alert.type}
-          message={alert.message}
-          onClose={() => setAlert(null)}
-        />
-      )}
-
-      {/* Stats Cards (3 Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0">
-            <Calendar className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Total Event</p>
-            <p className="text-xl font-bold text-slate-900">{totalEvents} Event</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
-            <CheckCircle2 className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Event Aktif</p>
-            <p className="text-xl font-bold text-slate-900">{activeEvents} Event</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-            <EyeOff className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Disembunyikan</p>
-            <p className="text-xl font-bold text-slate-900">{hiddenEvents} Event</p>
-          </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={openAddModal}
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer shrink-0"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>Tambah Event Baru</span>
+          </button>
         </div>
       </div>
 
-      {/* Filters and Search Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
-        {/* Search */}
-        <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+      {/* Filter & Search Bar Card */}
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Search Bar */}
+        <div className="relative w-full sm:w-80">
           <input
             type="text"
+            placeholder="Cari judul event, lokasi, deskripsi..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari judul, lokasi, atau deskripsi..."
-            className="w-full text-sm pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900"
+            className="w-full text-xs pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium"
           />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
-        {/* Filters */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 text-sm text-slate-600 font-semibold shrink-0">
-            <Filter className="w-4 h-4" />
-            <span>Filter:</span>
-          </div>
-
+        {/* Filter & Count */}
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <div className="relative">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-xs pl-3 pr-8 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
-              <option value="ALL">Semua Status</option>
-              <option value="ACTIVE">Aktif</option>
+              <option value="ALL">Semua Status (Tampil & Sembunyi)</option>
+              <option value="VISIBLE">Aktif Tampil di Publik</option>
               <option value="HIDDEN">Disembunyikan</option>
             </select>
-            <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           <button
             onClick={fetchEvents}
+            className="p-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-xl text-slate-600 transition-colors cursor-pointer"
             title="Refresh Data"
-            className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* CRUD Data Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden w-full">
+      {/* Main Table Content */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-slate-400 space-y-3">
-            <Loader2 className="w-7 h-7 animate-spin mx-auto text-slate-600" />
-            <p className="text-sm font-medium">Memuat data event showroom...</p>
+          <div className="p-12 text-center text-slate-500 flex flex-col items-center justify-center space-y-3">
+            <Loader2 className="w-8 h-8 animate-spin text-slate-900" />
+            <p className="text-xs font-semibold">Memuat daftar kegiatan showroom...</p>
           </div>
         ) : filteredEvents.length === 0 ? (
-          <div className="p-12 text-center text-slate-500 space-y-2">
-            <Calendar className="w-12 h-12 text-slate-300 mx-auto" />
-            <p className="text-base font-bold text-slate-800">Tidak ada event ditemukan</p>
-            <p className="text-sm text-slate-400">Coba ubah kata kunci pencarian atau filter yang aktif.</p>
+          <div className="p-12 text-center text-slate-500 space-y-3">
+            <Calendar className="w-10 h-10 mx-auto text-slate-300" />
+            <p className="text-sm font-bold text-slate-800">Tidak Ada Event Ditemukan</p>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              {search || statusFilter !== 'ALL'
+                ? 'Tidak ada kegiatan yang sesuai dengan filter pencarian.'
+                : 'Belum ada agenda kegiatan showroom. Klik tombol "+ Tambah Event Baru" di atas untuk membuat.'}
+            </p>
           </div>
         ) : (
-          <div className="overflow-x-auto w-full">
-            <table className="w-full text-left text-sm text-slate-700">
-              <thead className="bg-slate-50 border-b border-slate-200 font-bold text-slate-800 uppercase tracking-wider text-xs whitespace-nowrap">
-                <tr>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
                   <th className="px-4 py-4">Banner</th>
-                  <th className="px-5 py-4">Event</th>
+                  <th className="px-5 py-4">Judul & Deskripsi Event</th>
                   <th className="px-4 py-4">Jadwal & Waktu</th>
-                  <th className="px-4 py-4">Lokasi</th>
+                  <th className="px-4 py-4">Mode Akses</th>
                   <th className="px-4 py-4">Status Tampil</th>
                   <th className="px-5 py-4 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 font-medium">
                 {filteredEvents.map((evt) => (
                   <tr key={evt.id} className="hover:bg-slate-50/80 transition-colors">
                     {/* Banner Image */}
@@ -364,12 +331,12 @@ export default function AdminEventsPage() {
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500 font-medium mt-0.5">{evt.description}</p>
+                      <p className="text-xs text-slate-500 font-medium mt-0.5 line-clamp-2">{evt.description}</p>
                     </td>
 
                     {/* Jadwal & Waktu */}
                     <td className="px-4 py-4 font-medium text-slate-700 whitespace-nowrap">
-                      <div className="font-semibold text-slate-900 text-xs">
+                      <div className="font-bold text-slate-900 text-xs">
                         {evt.date}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
@@ -377,11 +344,19 @@ export default function AdminEventsPage() {
                       </div>
                     </td>
 
-                    {/* Lokasi */}
-                    <td className="px-4 py-4 font-medium text-slate-700 min-w-[200px]">
-                      <div className="text-slate-700 text-xs">
-                        {evt.location}
-                      </div>
+                    {/* Mode Akses Pendaftaran */}
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      {evt.hasRegistration !== false ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-50 border border-emerald-200 text-emerald-800">
+                          <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Daftar WA</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 border border-slate-200 text-slate-600">
+                          <Info className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Info Saja</span>
+                        </span>
+                      )}
                     </td>
 
                     {/* Status Tampil */}
@@ -407,7 +382,7 @@ export default function AdminEventsPage() {
                       </span>
                     </td>
 
-                    {/* Aksi (Icon-Only Buttons, matching cars/page.tsx) */}
+                    {/* Aksi (Icon-Only Buttons) */}
                     <td className="px-5 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button
@@ -419,27 +394,23 @@ export default function AdminEventsPage() {
                           }`}
                           title={evt.isVisible ? 'Disembunyikan dari Publik' : 'Tampilkan di Publik'}
                         >
-                          {evt.isVisible ? (
-                            <Eye className="w-4 h-4 text-emerald-600" />
-                          ) : (
-                            <EyeOff className="w-4 h-4 text-slate-400" />
-                          )}
+                          {evt.isVisible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                         </button>
 
                         <button
                           onClick={() => openEditModal(evt)}
-                          className="p-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
+                          className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md border border-slate-300 transition-all cursor-pointer inline-flex items-center justify-center"
                           title="Edit Event"
                         >
-                          <Pencil className="w-4 h-4 text-amber-600" />
+                          <Pencil className="w-4 h-4" />
                         </button>
 
                         <button
-                          onClick={() => handleDelete(evt.id, evt.title)}
-                          className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
+                          onClick={() => handleDelete(evt)}
+                          className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md border border-rose-200 transition-all cursor-pointer inline-flex items-center justify-center"
                           title="Hapus Event"
                         >
-                          <Trash2 className="w-4 h-4 text-rose-600" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -451,7 +422,7 @@ export default function AdminEventsPage() {
         )}
       </div>
 
-      {/* Modal Form Event (Matching cars page modal styling) */}
+      {/* Modal Form Event */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 my-8 overflow-hidden animate-in fade-in zoom-in-95">
@@ -479,7 +450,7 @@ export default function AdminEventsPage() {
             </div>
 
             {/* Modal Body Form */}
-            <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto text-xs">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto text-xs font-medium">
               <div>
                 <label className="block font-bold text-slate-800 mb-1">Judul Event *</label>
                 <input
@@ -493,10 +464,70 @@ export default function AdminEventsPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-800 mb-1">Badge Info (Opsional)</label>
+                <label className="block font-bold text-slate-800 mb-1">Kategori Event *</label>
                 <input
                   type="text"
-                  placeholder="Terdekat / Popular / Segera"
+                  required
+                  placeholder="Komunitas & Gathering / Pameran & Test Drive / Promo Showroom"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium text-xs"
+                />
+              </div>
+
+              {/* Mode Pendaftaran Toggle */}
+              <div>
+                <label className="block font-bold text-slate-800 mb-1.5">Mode Pendaftaran / Akses Publik *</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <label
+                    onClick={() => setFormData({ ...formData, hasRegistration: true })}
+                    className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${
+                      formData.hasRegistration
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-2xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="registrationMode"
+                      checked={formData.hasRegistration}
+                      onChange={() => setFormData({ ...formData, hasRegistration: true })}
+                      className="accent-emerald-600"
+                    />
+                    <div>
+                      <p className="text-xs font-bold">Buka Pendaftaran WA</p>
+                      <p className="text-[10px] font-normal text-slate-500">Tampilkan tombol "Daftar WA" & Detail</p>
+                    </div>
+                  </label>
+
+                  <label
+                    onClick={() => setFormData({ ...formData, hasRegistration: false })}
+                    className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${
+                      !formData.hasRegistration
+                        ? 'bg-amber-50 border-amber-500 text-amber-950 font-bold shadow-2xs'
+                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="registrationMode"
+                      checked={!formData.hasRegistration}
+                      onChange={() => setFormData({ ...formData, hasRegistration: false })}
+                      className="accent-amber-600"
+                    />
+                    <div>
+                      <p className="text-xs font-bold">Hanya Informasi Saja</p>
+                      <p className="text-[10px] font-normal text-slate-500">Tanpa tombol pendaftaran (Info publik)</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Badge Label (Opsional)</label>
+                <input
+                  type="text"
+                  placeholder="Terdekat / Pameran Utama / Promo Spesial"
                   value={formData.badge}
                   onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium text-xs"
@@ -509,7 +540,7 @@ export default function AdminEventsPage() {
                   <input
                     type="text"
                     required
-                    placeholder="Contoh: 15 - 17 Agustus 2026"
+                    placeholder="Contoh: Minggu, 23 Agustus 2026"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium text-xs"
@@ -578,21 +609,28 @@ export default function AdminEventsPage() {
                 )}
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-200">
+              {/* Submit Buttons */}
+              <div className="pt-4 border-t border-slate-200 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-lg border border-slate-300 font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer text-xs"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg border border-slate-300 transition-colors text-xs cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all flex items-center gap-2 shadow-xs cursor-pointer text-xs disabled:opacity-50"
+                  className="px-6 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg shadow-sm transition-all text-xs cursor-pointer disabled:opacity-50 flex items-center gap-2"
                 >
-                  {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                  <span>{editingEvent ? 'Simpan Perubahan' : 'Tambah Event'}</span>
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Menyimpan...</span>
+                    </>
+                  ) : (
+                    <span>Simpan Event</span>
+                  )}
                 </button>
               </div>
             </form>

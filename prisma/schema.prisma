@@ -221,17 +221,18 @@ model ShowroomLocation {
 }
 
 model Event {
-  id          String   @id @default(uuid())
-  title       String
-  category    String
-  date        String
-  time        String
-  location    String
-  image       String
-  description String
-  badge       String?
-  isVisible   Boolean  @default(true)
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(uuid())
+  title           String
+  category        String
+  date            String
+  time            String
+  location        String
+  image           String
+  description     String
+  badge           String?
+  hasRegistration Boolean  @default(true)
+  isVisible       Boolean  @default(true)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

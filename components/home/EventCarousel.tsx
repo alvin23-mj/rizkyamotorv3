@@ -12,10 +12,8 @@ import {
   Phone,
   CheckCircle2,
   Search,
-  Tag,
-  Gift,
-  Car,
   MessageSquare,
+  Info,
 } from 'lucide-react';
 
 interface EventItem {
@@ -28,6 +26,7 @@ interface EventItem {
   image: string;
   description: string;
   badge?: string;
+  hasRegistration?: boolean;
   isVisible?: boolean;
 }
 
@@ -78,6 +77,7 @@ export default function EventCarousel() {
       image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=1200&auto=format&fit=crop',
       description: 'Acara jalan santai keluarga & gathering pecinta otomotif Rizkya Motor. Menampilkan hiburan musik, doorprize menarik (TV 43", Sepeda Listrik, Voucher BBM), check-up gratis 160 titik mobil, serta sarapan bersama.',
       badge: 'Terdekat',
+      hasRegistration: true,
     },
     {
       id: 'default-2',
@@ -89,6 +89,7 @@ export default function EventCarousel() {
       image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop',
       description: 'Pameran mobil bekas berkualitas terbesar tahun ini. Diskon harga hingga Rp 25 Juta, gratis garansi mesin 2 tahun, dan promo bunga 0% dari partner leasing.',
       badge: 'Pameran Utama',
+      hasRegistration: true,
     },
     {
       id: 'default-3',
@@ -100,6 +101,7 @@ export default function EventCarousel() {
       image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1200&auto=format&fit=crop',
       description: 'Coba langsung performa serta keiritan unit Mobil Hybrid dan Listrik (EV) pilihan. Dapatkan voucher charging gratis 1 tahun & bonus kaca film premium.',
       badge: 'Test Drive EV',
+      hasRegistration: true,
     },
     {
       id: 'default-4',
@@ -111,6 +113,7 @@ export default function EventCarousel() {
       image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop',
       description: 'Dapatkan fasilitas DP seger mulai 10% dengan angsuran fleksibel & proses approval instan 1x24 jam untuk semua unit mobil pilihan.',
       badge: 'Promo Spesial',
+      hasRegistration: false,
     },
   ];
 
@@ -233,7 +236,7 @@ export default function EventCarousel() {
                     {evt.title}
                   </h3>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
                     {evt.description}
                   </p>
 
@@ -260,19 +263,25 @@ export default function EventCarousel() {
                   onClick={() => setSelectedEvent(evt)}
                   className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
                 >
-                  <span>Daftar Gratis</span>
+                  <span>Lihat Detail</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
 
-                <a
-                  href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Daftar WA</span>
-                </a>
+                {evt.hasRegistration !== false ? (
+                  <a
+                    href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Daftar WA</span>
+                  </a>
+                ) : (
+                  <div className="w-full bg-slate-100 text-slate-500 border border-slate-200 text-[11px] font-bold py-2.5 px-3 rounded-xl flex items-center justify-center text-center">
+                    <span>Info Saja</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -318,7 +327,7 @@ export default function EventCarousel() {
               </div>
             </div>
 
-            {/* Modal Content & Form */}
+            {/* Modal Content */}
             <div className="p-6 overflow-y-auto space-y-5 flex-1">
               <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-xs text-slate-700 border border-slate-200">
                 <div className="flex items-center gap-2">
@@ -344,121 +353,81 @@ export default function EventCarousel() {
                 </p>
               </div>
 
-              {/* Benefits / Fasilitas */}
-              <div className="p-3.5 bg-blue-50/60 border border-blue-100 rounded-xl space-y-2 text-xs text-blue-900">
-                <p className="font-bold flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>Fasilitas & Keuntungan Peserta Acara:</span>
-                </p>
-                <ul className="text-[11px] space-y-1 pl-5 list-disc font-medium text-slate-700">
-                  <li>Pendaftaran 100% Gratis & tanpa dipungut biaya</li>
-                  <li>Doorprize menarik & snack / sarapan bersama</li>
-                  <li>Konsultasi gratis & penawaran promo spesial event</li>
-                </ul>
-              </div>
-
-              {/* Registration Form Section */}
-              <div className="pt-3 border-t border-slate-100">
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
-                  Formulir Pendaftaran Gratis
-                </h4>
-
-                {registerSuccess ? (
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center space-y-3">
-                    <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-                    <h5 className="font-extrabold text-slate-900 text-base">Pendaftaran Berhasil!</h5>
-                    <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
-                      Terima kasih <strong className="text-slate-900">{formState.name}</strong>. Tempat Anda telah berhasil dicatat untuk acara ini. Tim konsultasi kami akan mengirimkan e-ticket via WhatsApp ke <strong className="text-slate-900">{formState.phone}</strong>.
-                    </p>
-                    <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center">
-                      <button
-                        onClick={closeModal}
-                        className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition-all cursor-pointer"
-                      >
-                        Tutup Window
-                      </button>
-                      <a
-                        href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya sudah mendaftar acara ${selectedEvent.title} atas nama ${formState.name}`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                      >
-                        <MessageSquare className="w-4 h-4" />
-                        <span>Konfirmasi via WhatsApp</span>
-                      </a>
-                    </div>
+              {/* Registration Section or Info Only Notice */}
+              {selectedEvent.hasRegistration !== false ? (
+                <div className="pt-3 border-t border-slate-100 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                      Pendaftaran Acara via WhatsApp
+                    </h4>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                      Pendaftaran Dibuka
+                    </span>
                   </div>
-                ) : (
-                  <form onSubmit={handleRegisterSubmit} className="space-y-3">
-                    <div>
-                      <label className="text-[11px] font-bold text-slate-700 block mb-1">
-                        Nama Lengkap *
-                      </label>
-                      <div className="relative">
-                        <User className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
+
+                  <a
+                    href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${selectedEvent.title}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>Daftar via WhatsApp Sekarang</span>
+                  </a>
+
+                  {/* Optional Quick Form */}
+                  {registerSuccess ? (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-2">
+                      <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
+                      <h5 className="font-bold text-slate-900 text-xs">Pendaftaran Tercatat!</h5>
+                      <p className="text-[11px] text-slate-600">
+                        Tim kami akan memproses pendaftaran atas nama <strong>{formState.name}</strong>.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleRegisterSubmit} className="pt-2 space-y-2">
+                      <p className="text-[11px] text-slate-500 font-medium">Atau tinggalkan kontak Anda untuk dihubungi admin:</p>
+                      <div className="grid grid-cols-2 gap-2">
                         <input
                           type="text"
                           required
-                          placeholder="Ketik nama lengkap Anda"
+                          placeholder="Nama Anda"
                           value={formState.name}
                           onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                          className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-slate-900 font-medium"
+                          className="px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800"
+                        />
+                        <input
+                          type="tel"
+                          required
+                          placeholder="No. WhatsApp"
+                          value={formState.phone}
+                          onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
+                          className="px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800"
                         />
                       </div>
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2 rounded-lg transition-colors cursor-pointer"
+                      >
+                        {submitting ? 'Mengirim...' : 'Kirim Pendaftaran Quick Form'}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              ) : (
+                <div className="pt-3 border-t border-slate-100">
+                  <div className="p-4 bg-slate-100 border border-slate-200 rounded-2xl flex items-start gap-3 text-slate-700">
+                    <Info className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <h5 className="font-bold text-slate-900 text-xs">Informasi Publik Acara</h5>
+                      <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                        Acara ini bersifat informatif dan terbuka untuk umum. Anda tidak perlu mendaftar terlebih dahulu, cukup berkunjung langsung ke lokasi pada jadwal pelaksanaan.
+                      </p>
                     </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-[11px] font-bold text-slate-700 block mb-1">
-                          Nomor WhatsApp / HP *
-                        </label>
-                        <div className="relative">
-                          <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
-                          <input
-                            type="tel"
-                            required
-                            placeholder="08123456789"
-                            value={formState.phone}
-                            onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                            className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-slate-900 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="text-[11px] font-bold text-slate-700 block mb-1">
-                          Jumlah Peserta
-                        </label>
-                        <select
-                          value={formState.count}
-                          onChange={(e) => setFormState({ ...formState, count: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-slate-900 font-medium"
-                        >
-                          <option value="1">1 Orang</option>
-                          <option value="2">2 Orang</option>
-                          <option value="3">3 Orang</option>
-                          <option value="4+">4+ Orang (Keluarga)</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50 mt-2 flex items-center justify-center gap-2"
-                    >
-                      {submitting ? (
-                        <span>Proses Pendaftaran...</span>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-4 h-4" />
-                          <span>Konfirmasi Pendaftaran Gratis</span>
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

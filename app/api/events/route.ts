@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     hasInitialSeeded = true;
 
     if (action === 'CREATE_EVENT') {
-      const { title, category, date, time, location, image, description, badge } = body;
+      const { title, category, date, time, location, image, description, badge, hasRegistration } = body;
       if (!title || !date || !location || !description) {
         return NextResponse.json({ error: 'Judul, tanggal, lokasi, dan deskripsi wajib diisi.' }, { status: 400 });
       }
@@ -98,6 +98,7 @@ export async function POST(request: Request) {
           image: image || 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop',
           description,
           badge: badge || null,
+          hasRegistration: hasRegistration !== undefined ? Boolean(hasRegistration) : true,
           isVisible: true,
         },
       });
@@ -106,7 +107,7 @@ export async function POST(request: Request) {
     }
 
     if (action === 'UPDATE_EVENT') {
-      const { id, title, category, date, time, location, image, description, badge, isVisible } = body;
+      const { id, title, category, date, time, location, image, description, badge, hasRegistration, isVisible } = body;
       if (!id) return NextResponse.json({ error: 'ID Event wajib diisi.' }, { status: 400 });
 
       const updated = await (prisma as any).event.update({
@@ -120,6 +121,7 @@ export async function POST(request: Request) {
           image: image !== undefined ? image : undefined,
           description: description !== undefined ? description : undefined,
           badge: badge !== undefined ? badge : undefined,
+          hasRegistration: hasRegistration !== undefined ? Boolean(hasRegistration) : undefined,
           isVisible: isVisible !== undefined ? Boolean(isVisible) : undefined,
         },
       });
