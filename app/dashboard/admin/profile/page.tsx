@@ -120,17 +120,11 @@ export default function AdminProfilePage() {
   return (
     <div className="p-6 w-full space-y-6 text-xs">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">Pengaturan Profil Admin</h1>
-          <p className="text-slate-500 mt-1 text-xs">
-            Kelola nama akun, username, email, dan kata sandi akses panel admin Anda.
-          </p>
-        </div>
-        <div className="inline-flex items-center gap-2 bg-slate-900 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">
-          <Shield className="w-4 h-4 text-emerald-400" />
-          <span>Admin Showroom</span>
-        </div>
+      <div className="pb-4 border-b border-slate-200">
+        <h1 className="text-xl font-bold text-slate-900 tracking-tight">Pengaturan Profil Admin</h1>
+        <p className="text-slate-500 mt-1 text-xs">
+          Kelola nama akun, username, email, dan kata sandi akses panel admin Anda.
+        </p>
       </div>
 
       {/* Alert Notification */}
