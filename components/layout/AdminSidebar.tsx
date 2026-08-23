@@ -20,6 +20,7 @@ import {
   FileSpreadsheet,
   Layers,
   UserCircle,
+  Calendar,
 } from 'lucide-react';
 
 const navSections = [
@@ -36,6 +37,7 @@ const navSections = [
       { href: '/dashboard/admin/cars', label: 'Kelola Mobil', icon: CarFront },
       { href: '/dashboard/admin/brands', label: 'Kelola Merek', icon: Award },
       { href: '/dashboard/admin/models', label: 'Kelola Model', icon: Layers },
+      { href: '/dashboard/admin/events', label: 'Kelola Acara & Event', icon: Calendar },
     ],
   },
   {
