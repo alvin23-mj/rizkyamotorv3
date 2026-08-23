@@ -3,13 +3,14 @@
 import { SessionProvider, useSession as useNextAuthSession } from 'next-auth/react';
 import React, { ReactNode, createContext, useContext } from 'react';
 
-const SafeSessionContext = createContext<{ data: any; status: string }>({
+const SafeSessionContext = createContext<{ data: any; status: string; update: (data?: any) => Promise<any> }>({
   data: null,
   status: 'unauthenticated',
+  update: async () => null,
 });
 
 function InnerAuthProvider({ children }: { children: ReactNode }) {
-  let sessionValue = { data: null, status: 'unauthenticated' };
+  let sessionValue = { data: null, status: 'unauthenticated', update: async () => null };
   try {
     const res = useNextAuthSession();
     if (res) sessionValue = res as any;

@@ -23,6 +23,7 @@ import {
   Sun,
   Moon,
   Calendar,
+  User,
 } from 'lucide-react';
 import { useComparison } from '@/context/ComparisonContext';
 
@@ -239,6 +240,15 @@ export default function Navbar() {
                       >
                         <LayoutDashboard className="w-4 h-4 text-slate-800" />
                         <span>Dashboard</span>
+                      </Link>
+
+                      <Link
+                        href={isAdmin ? '/dashboard/admin/profile' : '/dashboard/profile'}
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-semibold flex items-center gap-2"
+                      >
+                        <User className="w-4 h-4 text-slate-800" />
+                        <span>Profil & Akun</span>
                       </Link>
 
                       <button

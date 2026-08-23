@@ -19,6 +19,7 @@ import {
   X,
   FileSpreadsheet,
   Layers,
+  UserCircle,
 } from 'lucide-react';
 
 const navSections = [
@@ -26,6 +27,7 @@ const navSections = [
     title: 'Utama',
     items: [
       { href: '/dashboard/admin', label: 'Ringkasan', icon: BarChart3 },
+      { href: '/dashboard/admin/profile', label: 'Profil Saya', icon: UserCircle },
     ],
   },
   {

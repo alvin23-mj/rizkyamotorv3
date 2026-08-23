@@ -100,10 +100,10 @@ export default function DashboardPage() {
               </Link>
             )}
             <Link
-              href="/dashboard"
-              className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-200 transition-all cursor-pointer"
+              href="/dashboard/profile"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-200 transition-all cursor-pointer flex items-center gap-2"
             >
-              Profil Saya
+              <span>Pengaturan Profil & Akun</span>
             </Link>
           </div>
         </div>
