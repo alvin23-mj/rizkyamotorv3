@@ -120,7 +120,7 @@ export default function UserProfilePage() {
 
   return (
     <div className="bg-slate-50/50 min-h-[calc(100vh-200px)] py-8 text-xs">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Back Link & Header */}
         <div className="flex items-center justify-between pb-2 border-b border-slate-200">
           <Link
