@@ -258,7 +258,7 @@ export default function CarFilterBar({
         <button
           type="button"
           onClick={() => setIsMobileOpen(true)}
-          className="w-full flex items-center justify-between bg-slate-100 hover:bg-slate-200/80 text-slate-900 px-4 py-3.5 rounded-xl text-xs font-bold shadow-xs active:scale-[0.99] transition-all cursor-pointer border border-slate-200"
+          className="w-full flex items-center justify-between bg-white hover:bg-slate-50 text-slate-900 px-4 py-3.5 rounded-xl text-xs font-bold shadow-md hover:shadow-lg active:scale-[0.99] transition-all cursor-pointer border-0"
         >
           <div className="flex items-center gap-3">
             <SlidersHorizontal className="w-5 h-5 text-slate-900 shrink-0" />
