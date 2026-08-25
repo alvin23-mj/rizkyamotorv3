@@ -258,32 +258,29 @@ export default function CarFilterBar({
         <button
           type="button"
           onClick={() => setIsMobileOpen(true)}
-          className="w-full flex items-center justify-between bg-slate-900 text-white px-4 py-3.5 rounded-xl text-xs font-bold shadow-md hover:bg-slate-800 active:scale-[0.99] transition-all cursor-pointer border border-slate-800"
+          className="w-full flex items-center justify-between bg-slate-100 hover:bg-slate-200/80 text-slate-900 px-4 py-3.5 rounded-xl text-xs font-bold shadow-xs active:scale-[0.99] transition-all cursor-pointer border border-slate-200"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-              <SlidersHorizontal className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <SlidersHorizontal className="w-4 h-4 text-white" />
             </div>
             <div className="text-left">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-extrabold text-white">Filter & Urutkan Mobil</span>
+                <span className="text-sm font-extrabold text-slate-900">Filter & Urutkan Mobil</span>
                 {activeCount > 0 && (
                   <span className="bg-rose-500 text-white rounded-full px-2 py-0.5 text-[10px] font-extrabold shadow-xs">
                     {activeCount} Aktif
                   </span>
                 )}
               </div>
-              <p className="text-[11px] font-medium text-slate-400">
+              <p className="text-[11px] font-medium text-slate-500">
                 Klik untuk menyaring merek, bodi & harga
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 pl-2 shrink-0">
-            <span className="bg-slate-800 text-slate-200 text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-slate-700">
-              {totalResults} unit
-            </span>
-            <ChevronDown className="w-4 h-4 text-orange-400" />
+          <div className="flex items-center pl-2 shrink-0">
+            <ChevronDown className="w-5 h-5 text-slate-500" />
           </div>
         </button>
       </div>
@@ -291,16 +288,18 @@ export default function CarFilterBar({
       {/* Mobile Modal Drawer */}
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white w-[85%] max-w-sm h-full p-6 overflow-y-auto ml-auto flex flex-col justify-between shadow-2xl">
+          <div className="bg-white w-[85%] max-w-sm h-full p-6 overflow-y-auto ml-auto flex flex-col justify-between shadow-2xl relative">
             <div>
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
+              <div className="sticky top-0 bg-white pt-1 pb-4 mb-4 border-b border-slate-200 flex items-center justify-between z-10">
                 <div className="flex items-center gap-2">
-                  <SlidersHorizontal className="w-4 h-4 text-slate-900" />
-                  <h3 className="font-bold text-slate-900 text-sm">Filter Katalog</h3>
+                  <SlidersHorizontal className="w-5 h-5 text-slate-900" />
+                  <h3 className="font-extrabold text-slate-900 text-base">Filter Katalog</h3>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsMobileOpen(false)}
-                  className="p-1 text-slate-400 hover:text-slate-800 rounded-md"
+                  className="p-2 text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors cursor-pointer"
+                  title="Tutup Filter"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -308,21 +307,24 @@ export default function CarFilterBar({
               <FilterContent />
             </div>
 
-            <div className="pt-6 mt-6 border-t border-slate-200 flex gap-2">
+            <div className="pt-4 mt-6 border-t border-slate-200 flex gap-2 sticky bottom-0 bg-white pb-2 z-10">
               <button
+                type="button"
                 onClick={() => {
                   onReset();
                   setIsMobileOpen(false);
                 }}
-                className="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg hover:bg-slate-200 shadow-xs"
+                className="flex-1 py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-slate-200"
               >
-                Reset
+                <RotateCcw className="w-4 h-4 text-slate-600" />
+                <span>Reset</span>
               </button>
               <button
+                type="button"
                 onClick={() => setIsMobileOpen(false)}
-                className="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-lg hover:bg-slate-800"
+                className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
               >
-                Terapkan
+                Terapkan Filter
               </button>
             </div>
           </div>
