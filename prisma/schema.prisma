@@ -191,6 +191,7 @@ model ShowroomSetting {
   address            String   @default("Jl. Raya Otomotif No. 88, Jakarta")
   phone              String   @default("0812-9988-7766")
   whatsapp           String   @default("6281299887766")
+  email              String?  @default("info@rizkyamotor.com")
   operatingHoursText String   @default("08:30 - 18:00 WIB")
   heroHomeUrl        String?
   heroCatalogUrl     String?

@@ -215,8 +215,8 @@ export default function Footer() {
         <div className="border-t border-slate-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-slate-200">
           <p>© {new Date().getFullYear()} {showroomName}. Hak Cipta Dilindungi.</p>
           <div className="flex items-center space-x-5">
-            <Link href="#" className="hover:text-white hover:underline transition-colors">Kebijakan Privasi</Link>
-            <Link href="#" className="hover:text-white hover:underline transition-colors">Syarat & Ketentuan</Link>
+            <Link href="/privacy" className="hover:text-white hover:underline transition-colors">Kebijakan Privasi</Link>
+            <Link href="/terms" className="hover:text-white hover:underline transition-colors">Syarat & Ketentuan</Link>
             <button
               onClick={scrollToTop}
               suppressHydrationWarning

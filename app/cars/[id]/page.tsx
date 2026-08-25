@@ -87,6 +87,17 @@ export default function CarDetailPage() {
     }
   }, [session]);
 
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.settings) setSettings(data.settings);
+      })
+      .catch(console.error);
+  }, []);
+
   useEffect(() => {
     fetch('/api/schedule-settings')
       .then((res) => res.json())
@@ -468,7 +479,7 @@ export default function CarDetailPage() {
                 </button>
 
                 <a
-                  href={`https://wa.me/6281299887766?text=${waText}`}
+                  href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281299887766').replace(/[^0-9]/g, '')}?text=${waText}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 transition-all cursor-pointer"

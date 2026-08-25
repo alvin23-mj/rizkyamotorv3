@@ -6,7 +6,6 @@ import CarCard from '@/components/cars/CarCard';
 import HeroCarousel from '@/components/home/HeroCarousel';
 import BrandCarousel from '@/components/home/BrandCarousel';
 import CategoryCardsSection from '@/components/home/CategoryCardsSection';
-import LocationSection from '@/components/home/LocationSection';
 
 export const revalidate = 0;
 
@@ -45,13 +44,13 @@ export default async function HomePage() {
 
       {/* 3. Featured Showroom Inventory Section (Mobil Terbaru - 4 Cards Only) */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-          <h2 className="text-[24px] font-extrabold text-slate-900 tracking-tight" style={{ fontSize: '24px' }}>
+        <div className="flex items-center justify-between mb-6 gap-4">
+          <h2 className="text-xl sm:text-[24px] font-extrabold text-slate-900 tracking-tight">
             Mobil Terbaru
           </h2>
           <Link
             href="/cars"
-            className="inline-flex items-center text-slate-900 hover:text-black font-extrabold text-[15px] transition-colors cursor-pointer"
+            className="inline-flex items-center text-slate-900 hover:text-black font-extrabold text-sm sm:text-[15px] transition-colors cursor-pointer shrink-0"
           >
             <span>Lihat Semua</span>
           </Link>
@@ -73,9 +72,6 @@ export default async function HomePage() {
 
       {/* 4. Category / Exploration Cards Section (Eksplorasi Showroom - Dipindah di bawah Katalog) */}
       <CategoryCardsSection />
-
-      {/* 5. Location Section (Peta Lokasi Showroom) */}
-      <LocationSection />
     </div>
   );
 }

@@ -12,6 +12,7 @@ async function ensureCategoryColumnsExist() {
     'ALTER TABLE "ShowroomSetting" ADD COLUMN "categoryCompareUrl" TEXT',
     'ALTER TABLE "ShowroomSetting" ADD COLUMN "categoryScheduleUrl" TEXT',
     'ALTER TABLE "ShowroomSetting" ADD COLUMN "categoryEventUrl" TEXT',
+    'ALTER TABLE "ShowroomSetting" ADD COLUMN "email" TEXT',
   ];
 
   for (const sql of alterStatements) {
@@ -115,6 +116,7 @@ export async function POST(request: Request) {
         address,
         phone,
         whatsapp,
+        email,
         operatingHoursText,
         heroHomeUrl,
         heroCatalogUrl,
@@ -152,6 +154,7 @@ export async function POST(request: Request) {
               address: address !== undefined ? address : undefined,
               phone: phone !== undefined ? phone : undefined,
               whatsapp: whatsapp !== undefined ? whatsapp : undefined,
+              email: email !== undefined ? email : undefined,
               operatingHoursText: operatingHoursText !== undefined ? operatingHoursText : undefined,
               heroHomeUrl: heroHomeUrl !== undefined ? heroHomeUrl : undefined,
               heroCatalogUrl: heroCatalogUrl !== undefined ? heroCatalogUrl : undefined,
@@ -172,7 +175,7 @@ export async function POST(request: Request) {
           // Dual-layer fallback using Raw SQL execution when Prisma Client DTO type is locked
           await prisma.$executeRawUnsafe(
             `UPDATE "ShowroomSetting" SET 
-              "name" = ?, "logoUrl" = ?, "address" = ?, "phone" = ?, "whatsapp" = ?, 
+              "name" = ?, "logoUrl" = ?, "address" = ?, "phone" = ?, "whatsapp" = ?, "email" = ?,
               "operatingHoursText" = ?, "heroHomeUrl" = ?, "heroCatalogUrl" = ?, "heroSellUrl" = ?, "heroScheduleUrl" = ?,
               "categoryBrandUrl" = ?, "categoryBodyUrl" = ?, "categoryCompareUrl" = ?, "categoryScheduleUrl" = ?, "categoryEventUrl" = ?,
               "instagramUrl" = ?, "facebookUrl" = ?, "tiktokUrl" = ?, "youtubeUrl" = ?, "updatedAt" = ?
@@ -182,6 +185,7 @@ export async function POST(request: Request) {
             address ?? existing.address ?? '',
             phone ?? existing.phone ?? '',
             whatsapp ?? existing.whatsapp ?? '',
+            email ?? existing.email ?? 'info@rizkyamotor.com',
             operatingHoursText ?? existing.operatingHoursText ?? '',
             heroHomeUrl ?? existing.heroHomeUrl ?? '',
             heroCatalogUrl ?? existing.heroCatalogUrl ?? '',
@@ -210,6 +214,7 @@ export async function POST(request: Request) {
             address: address || '',
             phone: phone || '',
             whatsapp: whatsapp || '',
+            email: email || 'info@rizkyamotor.com',
             operatingHoursText: operatingHoursText || '',
             heroHomeUrl: heroHomeUrl || '',
             heroCatalogUrl: heroCatalogUrl || '',

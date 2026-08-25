@@ -39,7 +39,16 @@ export default function EventCarousel() {
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [settings, setSettings] = useState<any>(null);
+
   useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.settings) setSettings(data.settings);
+      })
+      .catch(console.error);
+
     fetch('/api/events')
       .then((res) => res.json())
       .then((data) => {
@@ -201,7 +210,7 @@ export default function EventCarousel() {
                     </button>
 
                     <a
-                      href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
+                      href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281234567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
@@ -302,7 +311,7 @@ export default function EventCarousel() {
                   </div>
 
                   <a
-                    href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${selectedEvent.title}`)}`}
+                    href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281234567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${selectedEvent.title}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"

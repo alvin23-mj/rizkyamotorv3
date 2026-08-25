@@ -27,6 +27,7 @@ interface ShowroomSettingData {
   address: string;
   phone: string;
   whatsapp: string;
+  email?: string;
   operatingHoursText: string;
   heroHomeUrl?: string;
   heroCatalogUrl?: string;
@@ -69,6 +70,7 @@ export default function AdminSettingsPage() {
     address: 'Jl. Raya Otomotif No. 88, Jakarta',
     phone: '0812-9988-7766',
     whatsapp: '6281299887766',
+    email: 'info@rizkyamotor.com',
     operatingHoursText: '08:30 - 18:00 WIB',
     heroHomeUrl: '',
     heroCatalogUrl: '',
@@ -192,6 +194,7 @@ export default function AdminSettingsPage() {
       address: settings.address || '',
       phone: settings.phone || '',
       whatsapp: settings.whatsapp || '',
+      email: settings.email || '',
       operatingHoursText: settings.operatingHoursText || '',
       heroHomeUrl: settings.heroHomeUrl || '',
       heroCatalogUrl: settings.heroCatalogUrl || '',
@@ -502,6 +505,18 @@ export default function AdminSettingsPage() {
                   placeholder="0812-9988-7766"
                   value={settings.phone}
                   onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Email Resmi Showroom *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="info@rizkyamotor.com"
+                  value={settings.email || ''}
+                  onChange={(e) => setSettings({ ...settings, email: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium"
                 />
               </div>
