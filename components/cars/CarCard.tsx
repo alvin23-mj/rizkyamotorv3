@@ -149,7 +149,8 @@ export default function CarCard({
   return (
     <Link
       href={`/cars/${car.id}`}
-      className="group bg-white rounded-[12px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full block cursor-pointer"
+      className="group bg-white !rounded-none overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full block cursor-pointer border-0"
+      style={{ borderRadius: 0 }}
     >
       {/* Image Container */}
       <div className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden block">
@@ -157,7 +158,7 @@ export default function CarCard({
           src={imgSrc}
           alt={car.title}
           onError={() => setImgSrc(DEFAULT_FALLBACK_IMAGE)}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover"
         />
         {(car.status === 'DP_PAID' || car.status === 'RESERVED' || car.status === 'BOOKED') ? (
           <div className="absolute top-2.5 left-2.5 bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-md shadow-md uppercase tracking-wider z-10">
@@ -186,50 +187,37 @@ export default function CarCard({
           </div>
         </div>
 
-        {/* Bottom Row: Favorite + Compare (Left) & Color Pill (Right) - Perfectly aligned at bottom */}
+        {/* Bottom Row: Favorite + Compare Icons (Left) & Color Text (Right) */}
         <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between">
-          {/* Favorite & Compare Badges (Left) */}
-          <div className="flex items-center gap-1.5">
-            {/* Favorite Badge */}
+          {/* Favorite & Compare Plain Icons (Left) */}
+          <div className="flex items-center gap-2">
+            {/* Favorite Icon */}
             <button
               suppressHydrationWarning
               onClick={handleFavoriteClick}
-              className={`relative flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all shadow-xs select-none ${isFavorited
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-900 hover:text-white'
-                }`}
+              className="p-1 text-slate-900 hover:text-black transition-colors select-none cursor-pointer"
               title={isFavorited ? 'Hapus dari Favorit' : 'Simpan ke Favorit'}
               aria-label={isFavorited ? 'Hapus dari Favorit' : 'Simpan ke Favorit'}
             >
-              <Heart className={`w-4 h-4 shrink-0 ${isFavorited ? 'fill-current text-white' : ''}`} />
+              <Heart className={`w-4.5 h-4.5 shrink-0 ${isFavorited ? 'fill-current text-rose-500 text-rose-500' : 'text-slate-900'}`} />
             </button>
 
-            {/* Compare Badge */}
+            {/* Compare Icon */}
             <button
               suppressHydrationWarning
               onClick={handleCompareClick}
-              className={`relative flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all shadow-xs select-none ${inCompare
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-900 hover:text-white'
-                }`}
+              className="p-1 text-slate-900 hover:text-black transition-colors select-none cursor-pointer"
               title={inCompare ? 'Hapus dari Komparasi' : 'Tambah ke Komparasi'}
               aria-label={inCompare ? 'Hapus dari Komparasi' : 'Tambah ke Komparasi'}
             >
-              <Scale className="w-4 h-4 shrink-0" />
+              <Scale className={`w-4.5 h-4.5 shrink-0 ${inCompare ? 'text-blue-600' : 'text-slate-900'}`} />
             </button>
           </div>
 
-          {/* Color Bar Pill (Right) */}
-          <div
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700 shadow-xs select-none"
-            title={`Warna: ${colorInfo.label}`}
-          >
-            <span
-              className="w-2.5 h-2.5 rounded-full shadow-2xs shrink-0"
-              style={{ backgroundColor: colorInfo.dotBg }}
-            />
-            <span className="truncate max-w-[80px] leading-tight">{colorInfo.label}</span>
-          </div>
+          {/* Color Text (Right) - Clean text without badge or dot */}
+          <span className="text-[12px] font-semibold text-slate-600 truncate max-w-[120px]">
+            {car.color || 'Putih Metalik'}
+          </span>
         </div>
       </div>
     </Link>

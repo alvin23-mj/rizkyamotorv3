@@ -103,13 +103,13 @@ export default function ComparePage() {
           <div className="flex items-center gap-3">
             <button
               onClick={clearComparison}
-              className="text-xs font-bold text-rose-600 hover:bg-rose-50 bg-white px-4 py-2.5 rounded-xl border border-slate-200 cursor-pointer"
+              className="text-xs font-bold text-slate-900 bg-white px-4 py-2.5 rounded-none border border-slate-200 cursor-pointer hover:-translate-y-1 transition-transform"
             >
               Hapus Semua
             </button>
             <Link
               href="/cars"
-              className="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl cursor-pointer"
+              className="text-xs font-bold text-white bg-slate-900 px-4 py-2.5 rounded-none cursor-pointer hover:-translate-y-1 transition-transform inline-block"
             >
               + Tambah Mobil Lain
             </Link>
@@ -169,7 +169,7 @@ export default function ComparePage() {
                           className="block space-y-3 cursor-pointer group"
                         >
                           {/* Image Container */}
-                          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-slate-100 shadow-xs">
+                          <div className="relative aspect-[16/10] h-44 w-full overflow-hidden rounded-xl bg-slate-100 shadow-xs">
                             <img
                               src={
                                 car.images && car.images.length > 0
@@ -177,7 +177,7 @@ export default function ComparePage() {
                                   : 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80'
                               }
                               alt={car.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              className="w-full h-44 object-cover"
                             />
                           </div>
 
@@ -186,7 +186,7 @@ export default function ComparePage() {
                             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
                               {car.brand}
                             </span>
-                            <h4 className="font-bold text-slate-900 text-sm line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
+                            <h4 className="font-bold text-slate-900 text-sm line-clamp-2 leading-snug hover:text-slate-700 transition-colors">
                               {displayTitle}
                             </h4>
                             <p className="text-lg font-black text-slate-900 tracking-tight pt-1">

@@ -122,7 +122,7 @@ export default function CarCardHorizontal({
         <img
           src={primaryImage}
           alt={car.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover"
         />
 
         {/* Color Badge Overlay on Image */}

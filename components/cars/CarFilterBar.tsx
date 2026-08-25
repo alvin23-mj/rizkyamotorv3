@@ -248,16 +248,6 @@ export default function CarFilterBar({
         </div>
       </div>
 
-      {/* Reset Button */}
-      {activeCount > 0 && (
-        <button
-          onClick={onReset}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold transition-colors"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>Reset {activeCount} Filter</span>
-        </button>
-      )}
     </div>
   );
 
@@ -335,7 +325,7 @@ export default function CarFilterBar({
           {activeCount > 0 && (
             <button
               onClick={onReset}
-              className="text-[11px] font-bold text-rose-600 hover:text-rose-700 hover:underline flex items-center gap-1"
+              className="text-[11px] font-bold text-rose-600 flex items-center gap-1"
             >
               <RotateCcw className="w-3 h-3" />
               Reset

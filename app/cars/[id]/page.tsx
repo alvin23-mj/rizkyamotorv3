@@ -74,6 +74,20 @@ export default function CarDetailPage() {
   const [operatingHours, setOperatingHours] = useState<{ timeSlot: string; maxQuota: number }[]>([]);
 
   useEffect(() => {
+    if (session?.user) {
+      if (session.user.name) setBookingName(session.user.name);
+      if ((session.user as any)?.phone) setBookingPhone((session.user as any).phone);
+      fetch('/api/profile')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.name) setBookingName(data.name);
+          if (data.phone) setBookingPhone(data.phone);
+        })
+        .catch(console.error);
+    }
+  }, [session]);
+
+  useEffect(() => {
     fetch('/api/schedule-settings')
       .then((res) => res.json())
       .then((data) => {
@@ -225,49 +239,10 @@ export default function CarDetailPage() {
   return (
     <div className="bg-white min-h-screen pb-16 text-slate-800">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Title Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {car.title}
-            </h1>
-            <div className="flex items-center gap-1.5 text-xs text-slate-600 opacity-50 mt-2 select-none" title="Jumlah Dilihat">
-              <Eye className="w-4 h-4 shrink-0" />
-              <span className="font-bold">{car.viewsCount}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleFavoriteClick}
-              className={`p-2.5 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer ${
-                isFavorited
-                  ? 'bg-rose-600 text-white'
-                  : 'bg-white text-slate-700 hover:text-rose-600'
-              }`}
-              title="Favorit"
-            >
-              <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current' : ''}`} />
-            </button>
-
-            <button
-              onClick={() => (inCompare ? removeFromComparison(car.id) : addToComparison(car))}
-              className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer ${
-                inCompare
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-800 hover:bg-slate-900 hover:text-white'
-              }`}
-            >
-              <Scale className="w-4 h-4" />
-              <span>{inCompare ? 'Dipilih di Komparasi' : '+ Bandingkan'}</span>
-            </button>
-          </div>
-        </div>
-
         {/* Gallery & Main Detail Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Left Column: Multi-photo viewer */}
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 flex flex-col space-y-4">
             <div className="relative aspect-[16/10] w-full bg-slate-100 rounded-xl overflow-hidden shadow-md">
               <img
                 src={images[activeImageIndex]}
@@ -365,21 +340,63 @@ export default function CarDetailPage() {
           </div>
 
           {/* Right Column: Price & CTA Card */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white rounded-xl p-6 shadow-md space-y-6">
-              <div>
-                <span className="text-xs text-slate-500 font-semibold tracking-wider uppercase">
-                  Harga Tunai (Cash)
-                </span>
-                <div className="text-3xl font-black text-slate-900 tracking-tight mt-1">
-                  {formatRupiah(car.price)}
+          <div className="lg:col-span-5 flex flex-col">
+            <div className="bg-white rounded-xl p-6 shadow-md space-y-5 h-full flex flex-col justify-between">
+              <div className="space-y-4">
+                {/* Header: Car Title & Action Icons */}
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight">
+                      {car.title}
+                    </h1>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-600 opacity-50 mt-1 select-none" title="Jumlah Dilihat">
+                      <Eye className="w-4 h-4 shrink-0" />
+                      <span className="font-bold">{car.viewsCount}</span>
+                    </div>
+                  </div>
+
+                  {/* Favorite & Compare Action Buttons */}
+                  <div className="flex items-center gap-2.5 shrink-0 pt-1">
+                    <button
+                      onClick={handleFavoriteClick}
+                      className="p-1 cursor-pointer transition-transform active:scale-95"
+                      title={isFavorited ? 'Hapus dari Favorit' : 'Tambah ke Favorit'}
+                    >
+                      <Heart
+                        className={`w-5 h-5 ${
+                          isFavorited ? 'text-rose-600 fill-rose-600' : 'text-slate-700'
+                        }`}
+                      />
+                    </button>
+
+                    <button
+                      onClick={() => (inCompare ? removeFromComparison(car.id) : addToComparison(car))}
+                      className="p-1 cursor-pointer transition-transform active:scale-95"
+                      title={inCompare ? 'Hapus dari Komparasi' : 'Tambah ke Komparasi'}
+                    >
+                      <Scale
+                        className={`w-5 h-5 ${
+                          inCompare ? 'text-blue-600 fill-blue-600' : 'text-slate-700'
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
 
+                {/* Price Section */}
+                <div>
+                  <span className="text-xs text-slate-500 font-semibold tracking-wider uppercase">
+                    Harga
+                  </span>
+                  <div className="text-3xl font-black text-slate-900 tracking-tight mt-0.5">
+                    {formatRupiah(car.price)}
+                  </div>
+                </div>
               </div>
 
-              {/* Specification Grid Pills */}
-              <div className="grid grid-cols-2 gap-3 py-4 border-y border-slate-100 text-xs">
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+              {/* Specification Grid Pills (Tanpa garis border-y) */}
+              <div className="grid grid-cols-2 gap-3 py-2 text-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <CalendarCheck className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Tahun Pembuatan</span>
@@ -387,7 +404,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <Gauge className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Kilometer</span>
@@ -395,7 +412,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <Fuel className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Bahan Bakar</span>
@@ -403,7 +420,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <ShieldCheck className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Transmisi</span>
@@ -411,7 +428,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <FileText className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Plat Nomor</span>
@@ -419,7 +436,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg shadow-xs">
+                <div className="flex items-center gap-2.5 bg-slate-50 p-3 rounded-lg border-none shadow-none">
                   <Users className="w-4 h-4 text-slate-800 shrink-0" />
                   <div>
                     <span className="block text-[10px] text-slate-400">Kapasitas Kursi</span>
@@ -658,8 +675,7 @@ export default function CarDetailPage() {
             ) : (
               <>
                 <div className="border-b border-slate-100 pb-3">
-                  <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <CalendarCheck className="w-5 h-5 text-slate-800" />
+                  <h3 className="text-lg font-bold text-slate-900">
                     Booking Test Drive & Kunjungan (Gratis)
                   </h3>
                   <p className="text-xs text-slate-500 mt-1">

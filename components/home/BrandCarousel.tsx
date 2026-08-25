@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface BrandItem {
   id?: string;
@@ -28,19 +27,6 @@ export default function BrandCarousel() {
       .catch(console.error);
   }, []);
 
-  const handleScroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -250 : 250;
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-
-      if (direction === 'right' && scrollLeft + clientWidth >= scrollWidth - 10) {
-        scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    }
-  };
-
   // Auto-scroll loop every 2.5 seconds, pauses when user hovers
   useEffect(() => {
     if (isPaused) return;
@@ -65,19 +51,10 @@ export default function BrandCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Scroll Left Button */}
-      <button
-        onClick={() => handleScroll('left')}
-        className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-slate-300 shadow-md flex items-center justify-center text-slate-800 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
-        aria-label="Gulir Kiri"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-
       {/* Horizontal Scrollable Brands Track */}
       <div
         ref={scrollRef}
-        className="flex items-center gap-3.5 overflow-x-auto scroll-smooth py-2 px-1 scrollbar-none snap-x"
+        className="flex items-center gap-3.5 overflow-x-auto scroll-smooth py-3 px-1 scrollbar-none snap-x"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {(brands.length > 0
@@ -100,9 +77,10 @@ export default function BrandCarousel() {
           <Link
             key={brand.name}
             href={`/cars?brand=${encodeURIComponent(brand.name)}`}
-            className="w-32 sm:w-36 shrink-0 snap-start group/card bg-white p-3.5 rounded-[14px] shadow-md hover:shadow-xl transition-all flex flex-col items-center justify-center text-center border-0"
+            className="w-38 sm:w-44 shrink-0 snap-start group/card bg-white py-5 px-4 !rounded-none shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center text-center border-0"
+            style={{ borderRadius: 0 }}
           >
-            <div className="w-14 h-14 flex items-center justify-center text-slate-900 transition-transform duration-300 group-hover/card:scale-110 mb-2 p-1">
+            <div className="w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center text-slate-900 mb-3 p-1">
               {brand.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -111,26 +89,20 @@ export default function BrandCarousel() {
                   className="max-h-full max-w-full object-contain"
                 />
               ) : (
-                <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm">
+                <div
+                  className="w-14 h-14 bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg !rounded-none"
+                  style={{ borderRadius: 0 }}
+                >
                   {brand.name.charAt(0)}
                 </div>
               )}
             </div>
-            <h3 className="font-bold text-slate-900 text-xs sm:text-sm truncate w-full">
+            <h3 className="font-extrabold text-slate-900 text-sm sm:text-[15px] truncate w-full">
               {brand.name}
             </h3>
           </Link>
         ))}
       </div>
-
-      {/* Scroll Right Button */}
-      <button
-        onClick={() => handleScroll('right')}
-        className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-slate-300 shadow-md flex items-center justify-center text-slate-800 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
-        aria-label="Gulir Kanan"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
     </div>
   );
 }

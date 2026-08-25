@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ShieldCheck,
   X,
+  Loader2,
 } from 'lucide-react';
 import { CarListing } from '@/types';
 import { formatRupiah } from '@/lib/utils';
@@ -68,6 +69,20 @@ export default function SchedulePage() {
   const [selectedCarId, setSelectedCarId] = useState('');
   const [customerName, setCustomerName] = useState(session?.user?.name || '');
   const [customerPhone, setCustomerPhone] = useState('');
+
+  useEffect(() => {
+    if (session?.user) {
+      if (session.user.name) setCustomerName(session.user.name);
+      if ((session.user as any)?.phone) setCustomerPhone((session.user as any).phone);
+      fetch('/api/profile')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.name) setCustomerName(data.name);
+          if (data.phone) setCustomerPhone(data.phone);
+        })
+        .catch(console.error);
+    }
+  }, [session]);
   const [bookingMode, setBookingMode] = useState<'NODP' | 'WITHDP'>('NODP');
   const [submitting, setSubmitting] = useState(false);
   const [successInfo, setSuccessInfo] = useState<{ isDp: boolean; carTitle: string } | null>(null);
@@ -216,93 +231,66 @@ export default function SchedulePage() {
         />
       </div>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-8">
-        {/* Date Selector Bar */}
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => changeDateByDays(-1)}
-              className="p-2 bg-white border border-slate-300 rounded-sm hover:bg-slate-100 transition-colors"
-              title="Hari Sebelumnya"
-            >
-              <ChevronLeft className="w-4 h-4 text-slate-700" />
-            </button>
+        {/* Combined Date Selector & Legend Card (White, No Outline, With Shadow) */}
+        <div className="bg-white rounded-lg p-5 sm:p-6 shadow-md space-y-4">
+          {/* Top Row: Date Selector & Input */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => changeDateByDays(-1)}
+                className="p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
+                title="Hari Sebelumnya"
+              >
+                <ChevronLeft className="w-4 h-4 text-slate-700" />
+              </button>
 
-            <div className="flex items-center gap-2 bg-white border border-slate-300 px-4 py-2 rounded-sm text-xs font-extrabold text-slate-900 shadow-2xs">
-              <CalendarIcon className="w-4 h-4 text-slate-800" />
-              <span>Tanggal: {selectedDate}</span>
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-2 rounded-md text-xs font-extrabold text-slate-900">
+                <CalendarIcon className="w-4 h-4 text-slate-800" />
+                <span>Tanggal: {selectedDate}</span>
+              </div>
+
+              <button
+                onClick={() => changeDateByDays(1)}
+                className="p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
+                title="Hari Berikutnya"
+              >
+                <ChevronRight className="w-4 h-4 text-slate-700" />
+              </button>
             </div>
 
-            <button
-              onClick={() => changeDateByDays(1)}
-              className="p-2 bg-white border border-slate-300 rounded-sm hover:bg-slate-100 transition-colors"
-              title="Hari Berikutnya"
-            >
-              <ChevronRight className="w-4 h-4 text-slate-700" />
-            </button>
+            {/* Quick Date Selector Input */}
+            <div className="flex items-center gap-2 overflow-x-auto">
+              <input
+                type="date"
+                min={tomorrowStr}
+                value={selectedDate}
+                onChange={(e) => {
+                  if (e.target.value >= tomorrowStr) {
+                    setSelectedDate(e.target.value);
+                  } else {
+                    alert('Booking jadwal minimal H-1 hari (mulai besok).');
+                  }
+                }}
+                className="bg-slate-50 border border-slate-200 text-xs rounded-md px-3 py-2 text-slate-900 font-medium cursor-pointer"
+              />
+            </div>
           </div>
 
-          {/* Quick Date Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto">
-            <button
-              onClick={() => setSelectedDate(tomorrowStr)}
-              className={`px-3 py-1.5 rounded-sm text-xs font-bold transition-all ${
-                selectedDate === tomorrowStr
-                  ? 'bg-slate-900 text-white shadow-2xs'
-                  : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'
-              }`}
-            >
-              Besok (H-1)
-            </button>
-            <button
-              onClick={() => {
-                const dayAfter = new Date();
-                dayAfter.setDate(dayAfter.getDate() + 2);
-                setSelectedDate(dayAfter.toISOString().split('T')[0]);
-              }}
-              className="px-3 py-1.5 rounded-sm text-xs font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all"
-            >
-              Lusa (H+2)
-            </button>
-            <input
-              type="date"
-              min={tomorrowStr}
-              value={selectedDate}
-              onChange={(e) => {
-                if (e.target.value >= tomorrowStr) {
-                  setSelectedDate(e.target.value);
-                } else {
-                  alert('Booking jadwal minimal H-1 hari (mulai besok).');
-                }
-              }}
-              className="bg-white border border-slate-300 text-xs rounded-sm px-2.5 py-1.5 text-slate-900 font-medium"
-            />
-          </div>
-        </div>
-
-        {/* Legend Indicator */}
-        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-600 bg-white p-3 border border-slate-200 rounded-sm">
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-emerald-500 border border-emerald-600" />
-            <span>Slot Tersedia (Bisa di-Booking)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-amber-500 border border-amber-600" />
-            <span>Terisi (Sudah di-Booking Tanpa DP)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-slate-900 border border-slate-800" />
-            <span>Terisi (DP Terbayar — Kartu Disembunyikan)</span>
+          {/* NB Note Keterangan */}
+          <div className="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+            <span className="font-bold text-amber-600">NB:</span>
+            <span>Jadwal kunjungan & test drive hanya dapat dilihat mulai H-1 (mulai besok).</span>
           </div>
         </div>
 
         {/* Time Slots Schedule Grid */}
         {loading ? (
           <div className="py-16 text-center text-xs text-slate-500 space-y-3">
-            <div className="w-8 h-8 border-3 border-slate-800 border-t-transparent rounded-full animate-spin mx-auto" />
+            <Loader2 className="w-8 h-8 text-slate-800 animate-spin mx-auto" />
             <p>Memuat ketersediaan jadwal tanggal {selectedDate}...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {operatingHours.map((slotObj) => {
               const slotTime = slotObj.timeSlot;
               const MAX_CAPACITY = slotObj.maxQuota || 1;
@@ -314,66 +302,71 @@ export default function SchedulePage() {
               return (
                 <div
                   key={slotTime}
-                  onClick={() => {
-                    if (!isFull) handleOpenBookingModal(slotTime);
-                  }}
-                  className={`border rounded-xl p-5 space-y-4 flex flex-col justify-between transition-all ${
+                  className={`relative !rounded-none p-5 flex flex-col justify-between text-center min-h-[250px] sm:min-h-[280px] transition-all select-none overflow-hidden ${
                     isFull
-                      ? 'bg-slate-50 border-slate-300 text-slate-900 shadow-2xs cursor-not-allowed opacity-75'
-                      : slotBookings.length > 0
-                      ? 'bg-amber-50/50 border-amber-200 text-slate-900 shadow-2xs hover:shadow-md cursor-pointer'
-                      : 'bg-white border-slate-200 text-slate-900 shadow-2xs hover:shadow-md cursor-pointer'
+                      ? 'bg-slate-100/90 text-slate-900 shadow-2xs opacity-70 cursor-default'
+                      : 'bg-white text-slate-900 shadow-md cursor-default'
                   }`}
+                  style={{ borderRadius: 0 }}
                 >
-                  <div className="space-y-3">
-                    {/* Slot Time Header */}
-                    <div className="flex items-center justify-between border-b pb-3 border-slate-200/60">
-                      <div className="flex items-center gap-2">
-                        <Clock
-                          className={`w-4 h-4 ${
-                            isFull ? 'text-slate-400' : slotBookings.length > 0 ? 'text-amber-600' : 'text-emerald-600'
-                          }`}
-                        />
-                        <span className="font-extrabold text-sm tracking-tight">{slotTime}</span>
-                      </div>
+                  {/* Top Ticket Stub Header: Time */}
+                  <div className="pb-3.5 border-b-2 border-dashed border-slate-200/80 relative">
+                    <span className="block font-black text-xs sm:text-sm text-slate-900 tracking-wider">
+                      {slotTime}
+                    </span>
+                  </div>
 
-                      {/* Status Badge */}
-                      {isFull ? (
-                        <span className="bg-slate-200 text-slate-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md">
-                          Sudah Penuh (0 Slot)
-                        </span>
-                      ) : slotBookings.length > 0 ? (
-                        <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md">
-                          Tersedia (Sisa {remainingSlots} Slot)
-                        </span>
-                      ) : (
-                        <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md">
-                          Tersedia ({remainingSlots} Slot)
-                        </span>
-                      )}
-                    </div>
+                  {/* Ticket Notch Semicircular Cutouts on Left & Right */}
+                  <div className="absolute top-[38px] -left-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
+                  <div className="absolute top-[38px] -right-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
 
-                    {/* Slot Details Body */}
+                  {/* Middle Ticket Section: Status Badge */}
+                  <div className="py-3 flex justify-center">
+                    {isFull ? (
+                      <span
+                        className="bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
+                        style={{ borderRadius: 0 }}
+                      >
+                        Sudah Penuh
+                      </span>
+                    ) : slotBookings.length > 0 ? (
+                      <span
+                        className="bg-amber-50 text-amber-700 border border-amber-300 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
+                        style={{ borderRadius: 0 }}
+                      >
+                        Dipesan
+                      </span>
+                    ) : (
+                      <span
+                        className="bg-emerald-50 text-emerald-700 border border-emerald-300 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
+                        style={{ borderRadius: 0 }}
+                      >
+                        Tersedia
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Bottom Ticket Stub Body: Details */}
+                  <div className="pt-2">
                     {slotBookings.length > 0 ? (
-                      <div className="space-y-1 text-xs">
+                      <div>
                         {!isFull ? (
-                          <p className="text-[10px] text-emerald-700 font-semibold">
-                            ✓ Masih tersedia {remainingSlots} slot di jam ini untuk Anda.
+                          <p className="text-[11px] text-slate-900 font-semibold leading-snug">
+                            Masih tersedia di jam ini untuk Anda.
                           </p>
                         ) : (
-                          <p className="text-[10px] text-slate-500 font-medium">
-                            Seluruh kuota slot di jam ini telah terisi.
+                          <p className="text-[11px] text-slate-600 font-medium leading-snug">
+                            Seluruh kuota di jam ini telah terisi.
                           </p>
                         )}
                       </div>
                     ) : (
-                      <div className="space-y-1 text-xs text-slate-500">
-                        <p className="font-semibold text-emerald-700 flex items-center gap-1">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Slot Waktu Siap Dipesan
+                      <div className="space-y-1">
+                        <p className="font-extrabold text-slate-900 text-xs tracking-tight">
+                          Waktu Siap Dipesan
                         </p>
-                        <p className="text-[11px] text-slate-600">
-                          Silakan pesan untuk jadwal kunjungan & test drive unit showroom.
+                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                          Silakan pesan untuk jadwal kunjungan & test drive.
                         </p>
                       </div>
                     )}
@@ -432,9 +425,8 @@ export default function SchedulePage() {
             ) : (
               <>
                 <div className="border-b border-slate-200 pb-3">
-                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-slate-800" />
-                    <span>Booking Slot Jam {selectedSlotForBooking} (Gratis)</span>
+                  <h3 className="text-base font-bold text-slate-900">
+                    Booking Slot Jam {selectedSlotForBooking} (Gratis)
                   </h3>
                   <p className="text-xs text-slate-500 mt-1">
                     Tanggal Kunjungan: <strong>{selectedDate}</strong>

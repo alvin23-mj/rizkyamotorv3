@@ -102,6 +102,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
+          phone: user.phone || '',
           avatar: user.avatar,
         };
       },
@@ -112,11 +113,13 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
+        token.phone = (user as any).phone;
         token.avatar = (user as any).avatar;
       }
       if (trigger === 'update' && session?.user) {
         if (session.user.name) token.name = session.user.name;
         if (session.user.email) token.email = session.user.email;
+        if ((session.user as any).phone) token.phone = (session.user as any).phone;
         if ((session.user as any).avatar) token.avatar = (session.user as any).avatar;
       }
       return token;
@@ -125,6 +128,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;
+        (session.user as any).phone = token.phone;
         (session.user as any).avatar = token.avatar;
       }
       return session;

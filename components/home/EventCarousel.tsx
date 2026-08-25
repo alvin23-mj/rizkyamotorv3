@@ -1,5 +1,5 @@
 'use client';
-
+// Updated EventCarousel card design
 import { useState, useEffect } from 'react';
 import {
   Calendar,
@@ -76,7 +76,6 @@ export default function EventCarousel() {
       location: 'Showroom Utama Rizkya Motor - Jl. Raya Otomotif No. 88, Jakarta',
       image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=1200&auto=format&fit=crop',
       description: 'Acara jalan santai keluarga & gathering pecinta otomotif Rizkya Motor. Menampilkan hiburan musik, doorprize menarik (TV 43", Sepeda Listrik, Voucher BBM), check-up gratis 160 titik mobil, serta sarapan bersama.',
-      badge: 'Terdekat',
       hasRegistration: true,
     },
     {
@@ -88,7 +87,6 @@ export default function EventCarousel() {
       location: 'Showroom Utama Rizkya Motor - Jakarta',
       image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop',
       description: 'Pameran mobil bekas berkualitas terbesar tahun ini. Diskon harga hingga Rp 25 Juta, gratis garansi mesin 2 tahun, dan promo bunga 0% dari partner leasing.',
-      badge: 'Pameran Utama',
       hasRegistration: true,
     },
     {
@@ -100,7 +98,6 @@ export default function EventCarousel() {
       location: 'Grand Atrium Central Park, Jakarta Barat',
       image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1200&auto=format&fit=crop',
       description: 'Coba langsung performa serta keiritan unit Mobil Hybrid dan Listrik (EV) pilihan. Dapatkan voucher charging gratis 1 tahun & bonus kaca film premium.',
-      badge: 'Test Drive EV',
       hasRegistration: true,
     },
     {
@@ -112,7 +109,6 @@ export default function EventCarousel() {
       location: 'Seluruh Cabang Showroom Rizkya Motor',
       image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop',
       description: 'Dapatkan fasilitas DP seger mulai 10% dengan angsuran fleksibel & proses approval instan 1x24 jam untuk semua unit mobil pilihan.',
-      badge: 'Promo Spesial',
       hasRegistration: false,
     },
   ];
@@ -140,60 +136,6 @@ export default function EventCarousel() {
 
   return (
     <div className="space-y-6">
-      {/* Controls Bar: Search & Category Tabs */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-        {/* Category Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
-          {[
-            { key: 'ALL', label: 'Semua Acara' },
-            { key: 'KOMUNITAS', label: 'Komunitas & Gathering' },
-            { key: 'PAMERAN', label: 'Pameran & Test Drive' },
-            { key: 'TEKNOLOGI', label: 'Teknologi & EV' },
-            { key: 'PROMO', label: 'Promo Showroom' },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveCategory(tab.key)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs ${
-                activeCategory === tab.key
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-white text-slate-700 hover:bg-slate-200/70 border border-slate-200'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Search Input */}
-        <div className="relative shrink-0 min-w-[240px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari acara / kata kunci..."
-            className="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-slate-900 font-medium"
-          />
-        </div>
-      </div>
-
-      {/* Active Count */}
-      <div className="flex items-center justify-between px-1 text-xs text-slate-500">
-        <span>Menampilkan <strong className="text-slate-900 font-bold">{filteredEvents.length}</strong> acara aktif</span>
-        {filteredEvents.length === 0 && (
-          <button
-            onClick={() => {
-              setActiveCategory('ALL');
-              setSearchQuery('');
-            }}
-            className="text-emerald-600 font-bold hover:underline cursor-pointer"
-          >
-            Reset Filter
-          </button>
-        )}
-      </div>
-
       {/* Cards Grid */}
       {filteredEvents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -214,73 +156,70 @@ export default function EventCarousel() {
                     alt={evt.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/30 to-transparent" />
-
-                  {evt.badge && (
-                    <span className="absolute top-3 left-3 bg-slate-900/90 text-white text-[11px] font-extrabold px-3 py-1 rounded-full border border-white/20 shadow-md">
-                      {evt.badge}
-                    </span>
-                  )}
-
-                  <span className="absolute bottom-3 left-3 text-[11px] font-bold text-slate-100 bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/10">
-                    {evt.category}
-                  </span>
                 </div>
 
                 {/* Event Info */}
                 <div className="p-5 space-y-3">
                   <h3
                     onClick={() => setSelectedEvent(evt)}
-                    className="text-base font-extrabold text-slate-900 group-hover:text-slate-700 transition-colors line-clamp-2 leading-snug cursor-pointer"
+                    className="text-base font-extrabold text-black group-hover:text-slate-700 transition-colors line-clamp-2 leading-snug cursor-pointer"
                   >
                     {evt.title}
                   </h3>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
+                  <p className="text-xs text-black line-clamp-2 leading-relaxed font-medium">
                     {evt.description}
                   </p>
 
-                  <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600 font-medium">
+                  <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-black font-medium">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span className="font-bold text-slate-900">{evt.date}</span>
+                      <Calendar className="w-4 h-4 text-black shrink-0" />
+                      <span className="font-bold text-black">{evt.date}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>{evt.time}</span>
+                      <Clock className="w-4 h-4 text-black shrink-0" />
+                      <span className="text-black font-medium">{evt.time}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span className="truncate">{evt.location}</span>
+                      <MapPin className="w-4 h-4 text-black shrink-0" />
+                      <span className="truncate text-black font-medium">{evt.location}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="p-5 pt-0 grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => setSelectedEvent(evt)}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
-                >
-                  <span>Lihat Detail</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-
+              <div className="p-5 pt-0">
                 {evt.hasRegistration !== false ? (
-                  <a
-                    href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Daftar WA</span>
-                  </a>
-                ) : (
-                  <div className="w-full bg-slate-100 text-slate-500 border border-slate-200 text-[11px] font-bold py-2.5 px-3 rounded-xl flex items-center justify-center text-center">
-                    <span>Info Saja</span>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => setSelectedEvent(evt)}
+                      className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
+                    >
+                      <span>Lihat Detail</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+
+                    <a
+                      href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <svg className="w-3.5 h-3.5 text-emerald-600 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.926 0-3.7-.514-5.234-1.41l-.375-.221-3.89 1.02 1.038-3.792-.243-.387a9.78 9.78 0 01-1.503-5.263c0-5.405 4.398-9.803 9.807-9.803 5.404 0 9.802 4.398 9.802 9.803 0 5.404-4.398 9.802-9.802 9.802m0-21.666C5.584.177 0 5.761 0 12.635c0 2.194.573 4.336 1.66 6.225L0 25.266l6.568-1.723a12.43 12.43 0 005.853 1.455c6.874 0 12.459-5.584 12.459-12.363 0-6.874-5.585-12.458-12.459-12.458" />
+                      </svg>
+                      <span>Daftar WA</span>
+                    </a>
                   </div>
+                ) : (
+                  <button
+                    onClick={() => setSelectedEvent(evt)}
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
+                  >
+                    <span>Lihat Detail</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
                 )}
               </div>
             </div>
@@ -318,9 +257,6 @@ export default function EventCarousel() {
               </button>
 
               <div className="absolute bottom-4 left-5 right-5 space-y-1">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500 text-slate-950 px-3 py-1 rounded-full shadow-xs">
-                  {selectedEvent.category}
-                </span>
                 <h3 className="text-xl font-extrabold text-white leading-tight">
                   {selectedEvent.title}
                 </h3>
@@ -329,18 +265,18 @@ export default function EventCarousel() {
 
             {/* Modal Content */}
             <div className="p-6 overflow-y-auto space-y-5 flex-1">
-              <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-xs text-slate-700 border border-slate-200">
+              <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-xs text-black border border-slate-200">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span className="font-bold text-slate-900">{selectedEvent.date}</span>
+                  <Calendar className="w-4 h-4 text-black shrink-0" />
+                  <span className="font-bold text-black">{selectedEvent.date}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-slate-500 shrink-0" />
-                  <span>{selectedEvent.time}</span>
+                  <Clock className="w-4 h-4 text-black shrink-0" />
+                  <span className="font-medium text-black">{selectedEvent.time}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-slate-500 shrink-0" />
-                  <span className="font-medium text-slate-800">{selectedEvent.location}</span>
+                  <MapPin className="w-4 h-4 text-black shrink-0" />
+                  <span className="font-medium text-black">{selectedEvent.location}</span>
                 </div>
               </div>
 

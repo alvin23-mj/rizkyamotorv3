@@ -8,29 +8,26 @@
     font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 14px;
   }
-
-  /* Ensure all buttons, inputs, selects, textareas default to 10px rounded corners */
-  button:not(.rounded-full),
-  input:not(.rounded-full),
-  select:not(.rounded-full),
-  textarea:not(.rounded-full) {
-    border-radius: 10px;
-  }
 }
 
-* {
+*,
+*::before,
+*::after {
+  border-radius: 0px !important;
   font-weight: 400 !important;
   text-transform: none !important;
 }
 
-/* Set border-radius to 10px across rounded elements */
 .rounded-sm,
-.rounded-none,
 .rounded-md,
 .rounded-lg,
-[class*="rounded-sm"],
-[class*="rounded-none"] {
-  border-radius: 10px !important;
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full,
+.rounded-none,
+[class*="rounded-"] {
+  border-radius: 0px !important;
 }
 
 /* Enforce minimum 14px font size across all text elements */

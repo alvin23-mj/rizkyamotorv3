@@ -6,7 +6,7 @@ import CarCard from '@/components/cars/CarCard';
 import CarFilterBar from '@/components/cars/CarFilterBar';
 import SkeletonCard from '@/components/ui/SkeletonCard';
 import { CarListing, CarFilterState } from '@/types';
-import { Car, AlertCircle, ShieldCheck, CheckCircle2, Sparkles, X, RotateCcw, Frown } from 'lucide-react';
+import { Car, AlertCircle, ShieldCheck, CheckCircle2, Sparkles, X, RotateCcw, Frown, Loader2 } from 'lucide-react';
 
 function CarsContent() {
   const searchParams = useSearchParams();
@@ -192,19 +192,20 @@ function CarsContent() {
 
                 <button
                   onClick={handleReset}
-                  className="text-[11px] font-bold text-rose-600 hover:underline ml-1"
+                  className="text-[11px] font-bold text-rose-600 ml-1"
                 >
                   Hapus Semua
                 </button>
               </div>
             )}
 
-            {/* Car Grid / Loading Skeleton / Empty State */}
+            {/* Car Grid / Loading Spinner / Empty State */}
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-                  <SkeletonCard key={n} />
-                ))}
+              <div className="py-20 flex flex-col items-center justify-center space-y-3 bg-white text-slate-800 w-full">
+                <Loader2 className="w-8 h-8 text-slate-800 animate-spin" />
+                <p className="text-xs font-bold text-slate-600 tracking-wider">
+                  Memuat Katalog Mobil...
+                </p>
               </div>
             ) : cars.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">

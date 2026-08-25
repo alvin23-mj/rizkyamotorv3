@@ -52,6 +52,30 @@ export default function SellToShowroomPage() {
     inspectionTime: '09:00 - 10:30 WIB',
   });
 
+  useEffect(() => {
+    if (session?.user) {
+      setFormData((prev) => ({
+        ...prev,
+        customerName: session.user?.name || prev.customerName,
+        customerEmail: session.user?.email || prev.customerEmail,
+        customerPhone: (session.user as any)?.phone || prev.customerPhone,
+      }));
+      fetch('/api/profile')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            setFormData((prev) => ({
+              ...prev,
+              customerName: data.name || prev.customerName,
+              customerEmail: data.email || prev.customerEmail,
+              customerPhone: data.phone || prev.customerPhone,
+            }));
+          }
+        })
+        .catch(console.error);
+    }
+  }, [session]);
+
   const [closures, setClosures] = useState<any[]>([]);
   const [availableSlots, setAvailableSlots] = useState<string[]>([
     '09:00 - 10:30 WIB',
@@ -204,12 +228,12 @@ export default function SellToShowroomPage() {
             </div>
           </div>
         ) : (
-          <div className="bg-white border border-slate-200 rounded-none p-6 sm:p-10 shadow-xs w-full space-y-6">
-            <div className="border-b border-slate-200 pb-4">
-              <h3 className="text-lg font-extrabold text-slate-900">
+          <div className="bg-white rounded-none p-6 sm:p-10 shadow-lg border-0 w-full space-y-6">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Formulir Penawaran Jual Mobil
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                 Lengkapi spesifikasi mobil bekas Anda secara akurat untuk estimasi penawaran terbaik.
               </p>
             </div>
@@ -224,12 +248,12 @@ export default function SellToShowroomPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Kontak Pemilik */}
               <div>
-                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3">
+                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3 uppercase">
                   1. Informasi Kontak Anda
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Nama Lengkap <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -239,12 +263,12 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Budi Santoso"
                       value={formData.customerName}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Nomor WhatsApp <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -254,12 +278,12 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 08123456789"
                       value={formData.customerPhone}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Kota / Domisili Mobil
                     </label>
                     <input
@@ -268,21 +292,21 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Jakarta Selatan"
                       value={formData.city}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Data Spesifikasi Mobil */}
-              <div className="pt-4 border-t border-slate-200">
-                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3">
+              <div className="pt-4 border-t border-slate-100">
+                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3 uppercase">
                   2. Spesifikasi Kendaraan
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Merek Mobil <span className="text-rose-500">*</span>
                     </label>
                     <select
@@ -290,7 +314,7 @@ export default function SellToShowroomPage() {
                       required
                       value={formData.brand}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="">Pilih Merek</option>
                       <option value="Toyota">Toyota</option>
@@ -306,7 +330,7 @@ export default function SellToShowroomPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Model & Varian <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -316,12 +340,12 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Innova Venturer 2.4 AT"
                       value={formData.model}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Tahun Pembuatan <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -331,19 +355,19 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 2020"
                       value={formData.year}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Transmisi
                     </label>
                     <select
                       name="transmission"
                       value={formData.transmission}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="Automatic">Automatic</option>
                       <option value="Manual">Manual</option>
@@ -351,14 +375,14 @@ export default function SellToShowroomPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Bahan Bakar
                     </label>
                     <select
                       name="fuelType"
                       value={formData.fuelType}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="Pertalite/Bensin">Bensin</option>
                       <option value="Diesel">Diesel</option>
@@ -368,7 +392,7 @@ export default function SellToShowroomPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Kilometer (Jarak Tempuh)
                     </label>
                     <input
@@ -377,21 +401,21 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 35000"
                       value={formData.mileage}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Price, Inspection Date & Description */}
-              <div className="pt-4 border-t border-slate-200">
-                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3">
+              <div className="pt-4 border-t border-slate-100">
+                <h4 className="text-xs font-extrabold tracking-wider text-slate-900 mb-3 uppercase">
                   3. Ekspektasi Harga & Jadwal Datang Inspeksi
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Ekspektasi Harga Jual (Rp) <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -401,12 +425,12 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 250000000"
                       value={formData.expectedPrice}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Tanggal Datang (H-1 Minimal) <span className="text-rose-500">*</span>
                     </label>
                     <input
@@ -416,11 +440,11 @@ export default function SellToShowroomPage() {
                       min={getTomorrowStr()}
                       value={formData.inspectionDate}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white font-semibold cursor-pointer"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
                     />
                     {formData.inspectionDate && (
                       <p className="text-[11px] font-bold text-emerald-700 mt-1">
-                        🗓️ Hari Datang: {formatIndonesianDateWithDay(formData.inspectionDate)}
+                        Hari Datang: {formatIndonesianDateWithDay(formData.inspectionDate)}
                       </p>
                     )}
                     {closures.find((c) => c.closedDate === formData.inspectionDate) && (
@@ -432,7 +456,7 @@ export default function SellToShowroomPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Pilih Jam Slot Kedatangan <span className="text-rose-500">*</span>
                     </label>
                     <select
@@ -440,7 +464,7 @@ export default function SellToShowroomPage() {
                       required
                       value={formData.inspectionTime}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white font-semibold cursor-pointer"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
                     >
                       {availableSlots.map((slot) => (
                         <option key={slot} value={slot}>
@@ -451,7 +475,7 @@ export default function SellToShowroomPage() {
                   </div>
 
                   <div className="sm:col-span-3">
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block font-bold text-slate-700 mb-1.5">
                       Keterangan / Kondisi Tambahan (Opsional)
                     </label>
                     <textarea
@@ -460,16 +484,16 @@ export default function SellToShowroomPage() {
                       placeholder="Jelaskan kondisi riil, servis rutin, pajak, atau apakah ada bekas lecet/baret..."
                       value={formData.description}
                       onChange={handleChange}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-none px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-800 focus:bg-white resize-none"
+                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none transition-all placeholder:text-slate-400"
                     ></textarea>
                   </div>
                 </div>
               </div>
 
               {/* Section 4: Foto Unit Kendaraan */}
-              <div className="space-y-4 pt-4 border-t border-slate-200">
+              <div className="space-y-4 pt-4 border-t border-slate-100">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <h4 className="text-xs font-extrabold tracking-wider text-slate-900 flex items-center gap-1.5">
+                  <h4 className="text-xs font-extrabold tracking-wider text-slate-900 uppercase flex items-center gap-1.5">
                     <span>4. Unggah Foto Unit Kendaraan (Minimal 2 Foto)</span>
                     <span className="text-rose-500">*</span>
                   </h4>
@@ -502,7 +526,7 @@ export default function SellToShowroomPage() {
 
                 {/* Upload Dropzone / Button */}
                 <div className="flex flex-wrap items-center gap-3">
-                  <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-none shadow-2xs transition-all cursor-pointer">
+                  <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-none shadow-md transition-all cursor-pointer">
                     <Upload className="w-4 h-4" />
                     <span>Pilih & Tambah Foto Kendaraan</span>
                     <input
@@ -549,12 +573,12 @@ export default function SellToShowroomPage() {
                 )}
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-4 border-t border-slate-200 flex justify-end">
+              {/* Full-width Submit Button (Identik dengan formulir Kirimkan Pesan) */}
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3.5 px-8 rounded-none transition-all flex items-center gap-2 disabled:opacity-50"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 rounded-none shadow-md tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-60"
                 >
                   {loading ? (
                     <>

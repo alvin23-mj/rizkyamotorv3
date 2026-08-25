@@ -44,16 +44,13 @@ const DEFAULT_EVENTS = [
   },
 ];
 
-let hasInitialSeeded = false;
-
 export async function GET() {
   try {
     let events = await (prisma as any).event.findMany({
       orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     });
 
-    if (!hasInitialSeeded && (!events || events.length === 0)) {
-      hasInitialSeeded = true;
+    if (!events || events.length === 0) {
       await (prisma as any).event.createMany({
         data: DEFAULT_EVENTS,
       });
@@ -62,7 +59,6 @@ export async function GET() {
       });
     }
 
-    hasInitialSeeded = true;
     return NextResponse.json({ events });
   } catch (error: any) {
     console.error('Error fetching events:', error);
@@ -80,7 +76,6 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { action } = body;
-    hasInitialSeeded = true;
 
     if (action === 'CREATE_EVENT') {
       const { title, category, date, time, location, image, description, badge, hasRegistration } = body;

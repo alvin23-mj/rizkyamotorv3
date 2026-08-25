@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { ArrowRight, Frown, Sparkles, LayoutGrid, Calendar } from 'lucide-react';
+import { ChevronRight, Frown } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import CarCard from '@/components/cars/CarCard';
 
 import HeroCarousel from '@/components/home/HeroCarousel';
 import BrandCarousel from '@/components/home/BrandCarousel';
 import CategoryCardsSection from '@/components/home/CategoryCardsSection';
+import LocationSection from '@/components/home/LocationSection';
 
 export const revalidate = 0;
 
@@ -34,40 +35,31 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-16 pb-20 bg-white text-slate-800">
-      {/* Pure Image Hero Carousel Banner Slider */}
+      {/* 1. Pure Image Hero Carousel Banner Slider */}
       <HeroCarousel banners={heroBannerUrls.length > 0 ? heroBannerUrls : undefined} />
 
-      {/* Brand Carousel Slider - Placed directly under Hero Banner */}
+      {/* 2. Brand Carousel Slider - Placed directly under Hero Banner */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <BrandCarousel />
       </section>
 
-      {/* 3 Image Cards Section (Kategori Merek, Tipe Bodi, Acara Showroom) */}
-      <CategoryCardsSection />
-
-      {/* 4. Featured Showroom Inventory Section */}
+      {/* 3. Featured Showroom Inventory Section (Mobil Terbaru - 4 Cards Only) */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-slate-200 mb-8 gap-4">
-          <div>
-            <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
-              Katalog Pilihan
-            </span>
-            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Stok Mobil Resmi Terbaru
-            </h2>
-          </div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+          <h2 className="text-[24px] font-extrabold text-slate-900 tracking-tight" style={{ fontSize: '24px' }}>
+            Mobil Terbaru
+          </h2>
           <Link
             href="/cars"
-            className="text-xs font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 hover:underline"
+            className="inline-flex items-center text-slate-900 hover:text-black font-extrabold text-[15px] transition-colors cursor-pointer"
           >
-            <span>Lihat Semua Stok</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>Lihat Semua</span>
           </Link>
         </div>
 
         {featuredCars.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCars.map((car: any) => (
+            {featuredCars.slice(0, 4).map((car: any) => (
               <CarCard key={car.id} car={car} />
             ))}
           </div>
@@ -78,6 +70,12 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* 4. Category / Exploration Cards Section (Eksplorasi Showroom - Dipindah di bawah Katalog) */}
+      <CategoryCardsSection />
+
+      {/* 5. Location Section (Peta Lokasi Showroom) */}
+      <LocationSection />
     </div>
   );
 }
