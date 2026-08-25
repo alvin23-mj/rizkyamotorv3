@@ -254,23 +254,37 @@ export default function CarFilterBar({
   return (
     <>
       {/* Mobile Toggle Button */}
-      <div className="lg:hidden mb-4 w-full">
+      <div className="lg:hidden mb-5 w-full">
         <button
+          type="button"
           onClick={() => setIsMobileOpen(true)}
-          className="w-full flex items-center justify-between bg-slate-900 text-white px-4 py-3 rounded-lg text-xs font-bold shadow-md hover:bg-slate-800 transition-colors"
+          className="w-full flex items-center justify-between bg-slate-900 text-white px-4 py-3.5 rounded-xl text-xs font-bold shadow-md hover:bg-slate-800 active:scale-[0.99] transition-all cursor-pointer border border-slate-800"
         >
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            <span>Filter & Urutkan Stok Mobil</span>
-            {activeCount > 0 && (
-              <span className="bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">
-                {activeCount}
-              </span>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <SlidersHorizontal className="w-4 h-4" />
+            </div>
+            <div className="text-left">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-extrabold text-white">Filter & Urutkan Mobil</span>
+                {activeCount > 0 && (
+                  <span className="bg-rose-500 text-white rounded-full px-2 py-0.5 text-[10px] font-extrabold shadow-xs">
+                    {activeCount} Aktif
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] font-medium text-slate-400">
+                Klik untuk menyaring merek, bodi & harga
+              </p>
+            </div>
           </div>
-          <span className="text-slate-400 text-[11px] font-normal">
-            {totalResults} unit
-          </span>
+
+          <div className="flex items-center gap-1.5 pl-2 shrink-0">
+            <span className="bg-slate-800 text-slate-200 text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-slate-700">
+              {totalResults} unit
+            </span>
+            <ChevronDown className="w-4 h-4 text-orange-400" />
+          </div>
         </button>
       </div>
 
