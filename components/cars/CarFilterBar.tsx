@@ -261,18 +261,9 @@ export default function CarFilterBar({
           className="w-full flex items-center justify-between bg-slate-100 hover:bg-slate-200/80 text-slate-900 px-4 py-3.5 rounded-xl text-xs font-bold shadow-xs active:scale-[0.99] transition-all cursor-pointer border border-slate-200"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-              <SlidersHorizontal className="w-4 h-4 text-white" />
-            </div>
+            <SlidersHorizontal className="w-5 h-5 text-slate-900 shrink-0" />
             <div className="text-left">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-extrabold text-slate-900">Filter & Urutkan Mobil</span>
-                {activeCount > 0 && (
-                  <span className="bg-rose-500 text-white rounded-full px-2 py-0.5 text-[10px] font-extrabold shadow-xs">
-                    {activeCount} Aktif
-                  </span>
-                )}
-              </div>
+              <span className="text-sm font-extrabold text-slate-900">Filter & Urutkan Mobil</span>
               <p className="text-[11px] font-medium text-slate-500">
                 Klik untuk menyaring merek, bodi & harga
               </p>
