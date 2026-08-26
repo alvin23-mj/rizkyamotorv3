@@ -99,6 +99,7 @@ function RegisterForm() {
                 placeholder="nama@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                suppressHydrationWarning
                 className="w-full bg-slate-50 border border-slate-300 rounded-md pl-10 pr-4 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-900 transition-all cursor-text"
               />
             </div>
@@ -114,6 +115,7 @@ function RegisterForm() {
                 placeholder="08123456789"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                suppressHydrationWarning
                 className="w-full bg-slate-50 border border-slate-300 rounded-md pl-10 pr-4 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-900 transition-all cursor-text"
               />
             </div>
@@ -130,6 +132,7 @@ function RegisterForm() {
                 placeholder="Minimal 6 karakter"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                suppressHydrationWarning
                 className="w-full bg-slate-50 border border-slate-300 rounded-md pl-10 pr-10 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-900 transition-all cursor-text"
               />
               <button

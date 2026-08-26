@@ -99,6 +99,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="nama@email.com"
+                  suppressHydrationWarning
                   className="w-full bg-slate-50 border border-slate-300 rounded-md pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-900 transition-all cursor-text"
                 />
               </div>
@@ -118,6 +119,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
+                  suppressHydrationWarning
                   className="w-full bg-slate-50 border border-slate-300 rounded-md pl-10 pr-10 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-900 transition-all cursor-text"
                 />
                 <button
