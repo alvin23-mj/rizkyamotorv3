@@ -143,97 +143,115 @@ export default function EventCarousel() {
     return matchCategory && matchQuery;
   });
 
+  const renderEventCard = (evt: EventItem, idx: number) => (
+    <div
+      key={evt.id || idx}
+      className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group h-full"
+    >
+      <div>
+        {/* Event Image */}
+        <div
+          onClick={() => setSelectedEvent(evt)}
+          className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100 cursor-pointer"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={evt.image}
+            alt={evt.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+
+        {/* Event Info */}
+        <div className="p-4 sm:p-5 space-y-3">
+          <h3
+            onClick={() => setSelectedEvent(evt)}
+            className="text-sm sm:text-base font-extrabold text-black group-hover:text-slate-700 transition-colors line-clamp-2 leading-snug cursor-pointer"
+          >
+            {evt.title}
+          </h3>
+
+          <p className="text-xs text-black line-clamp-2 leading-relaxed font-medium">
+            {evt.description}
+          </p>
+
+          <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-black font-medium">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-black shrink-0" />
+              <span className="font-bold text-black">{evt.date}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-black shrink-0" />
+              <span className="text-black font-medium">{evt.time}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-black shrink-0" />
+              <span className="truncate text-black font-medium">{evt.location}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="p-4 sm:p-5 pt-0">
+        {evt.hasRegistration !== false ? (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => setSelectedEvent(evt)}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
+            >
+              <span>Detail</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+
+            <a
+              href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281234567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            >
+              <svg className="w-3.5 h-3.5 text-emerald-600 fill-current shrink-0" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.926 0-3.7-.514-5.234-1.41l-.375-.221-3.89 1.02 1.038-3.792-.243-.387a9.78 9.78 0 01-1.503-5.263c0-5.405 4.398-9.803 9.807-9.803 5.404 0 9.802 4.398 9.802 9.803 0 5.404-4.398 9.802-9.802 9.802m0-21.666C5.584.177 0 5.761 0 12.635c0 2.194.573 4.336 1.66 6.225L0 25.266l6.568-1.723a12.43 12.43 0 005.853 1.455c6.874 0 12.459-5.584 12.459-12.363 0-6.874-5.585-12.458-12.459-12.458" />
+              </svg>
+              <span>Daftar</span>
+            </a>
+          </div>
+        ) : (
+          <button
+            onClick={() => setSelectedEvent(evt)}
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
+          >
+            <span>Lihat Detail</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
-      {/* Cards Grid */}
+      {/* Cards Display */}
       {filteredEvents.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map((evt, idx) => (
-            <div
-              key={evt.id || idx}
-              className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
-            >
-              <div>
-                {/* Event Image */}
-                <div
-                  onClick={() => setSelectedEvent(evt)}
-                  className="relative h-52 w-full overflow-hidden bg-slate-100 cursor-pointer"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={evt.image}
-                    alt={evt.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-
-                {/* Event Info */}
-                <div className="p-5 space-y-3">
-                  <h3
-                    onClick={() => setSelectedEvent(evt)}
-                    className="text-base font-extrabold text-black group-hover:text-slate-700 transition-colors line-clamp-2 leading-snug cursor-pointer"
-                  >
-                    {evt.title}
-                  </h3>
-
-                  <p className="text-xs text-black line-clamp-2 leading-relaxed font-medium">
-                    {evt.description}
-                  </p>
-
-                  <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-black font-medium">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-black shrink-0" />
-                      <span className="font-bold text-black">{evt.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-black shrink-0" />
-                      <span className="text-black font-medium">{evt.time}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-black shrink-0" />
-                      <span className="truncate text-black font-medium">{evt.location}</span>
-                    </div>
-                  </div>
-                </div>
+        <>
+          {/* Mobile View: Horizontal Scroll Slider */}
+          <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-none snap-x snap-mandatory pt-1">
+            {filteredEvents.map((evt, idx) => (
+              <div key={evt.id || idx} className="w-[280px] sm:w-[320px] shrink-0 snap-start">
+                {renderEventCard(evt, idx)}
               </div>
+            ))}
+          </div>
 
-              {/* Action Buttons */}
-              <div className="p-5 pt-0">
-                {evt.hasRegistration !== false ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setSelectedEvent(evt)}
-                      className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
-                    >
-                      <span>Lihat Detail</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-
-                    <a
-                      href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281234567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Halo Admin Rizkya Motor, saya berminat mendaftar acara: ${evt.title}`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                    >
-                      <svg className="w-3.5 h-3.5 text-emerald-600 fill-current shrink-0" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.926 0-3.7-.514-5.234-1.41l-.375-.221-3.89 1.02 1.038-3.792-.243-.387a9.78 9.78 0 01-1.503-5.263c0-5.405 4.398-9.803 9.807-9.803 5.404 0 9.802 4.398 9.802 9.803 0 5.404-4.398 9.802-9.802 9.802m0-21.666C5.584.177 0 5.761 0 12.635c0 2.194.573 4.336 1.66 6.225L0 25.266l6.568-1.723a12.43 12.43 0 005.853 1.455c6.874 0 12.459-5.584 12.459-12.363 0-6.874-5.585-12.458-12.459-12.458" />
-                      </svg>
-                      <span>Daftar WA</span>
-                    </a>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setSelectedEvent(evt)}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
-                  >
-                    <span>Lihat Detail</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                )}
+          {/* Desktop View: Grid Layout */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map((evt, idx) => (
+              <div key={evt.id || idx}>
+                {renderEventCard(evt, idx)}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       ) : (
         <div className="p-12 text-center bg-slate-50 border border-dashed border-slate-300 rounded-2xl space-y-3">
           <Calendar className="w-10 h-10 text-slate-400 mx-auto" />

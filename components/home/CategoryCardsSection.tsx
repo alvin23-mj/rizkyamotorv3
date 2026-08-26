@@ -58,24 +58,23 @@ export default function CategoryCardsSection() {
 
   return (
     <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1080px] mx-auto space-y-5">
+      <div className="space-y-5 md:space-y-6">
         {/* Header Title */}
         <div>
-          <h2 className="text-2xl sm:text-[24px] font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-[24px] font-extrabold text-slate-900 tracking-tight">
             Eksplorasi Showroom Kami
           </h2>
         </div>
 
-        {/* 3 Equal Column Cards Grid (Lihat Jadwal, Komparasi Mobil, Acara Showroom) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Mobile View: Horizontal Scroll */}
+        <div className="flex md:hidden overflow-x-auto gap-4 pb-2 scrollbar-none snap-x snap-mandatory pt-1">
           {cards.map((card) => (
             <Link
               key={card.id}
               href={card.href}
-              className="relative w-full h-[380px] sm:h-[430px] !rounded-none overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-xl hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-end p-6 sm:p-7"
-              style={{ borderRadius: 0 }}
+              className="relative w-[280px] h-[230px] shrink-0 snap-start overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl flex flex-col justify-end p-5"
             >
-              {/* Background Image - Clean without zoom-in */}
+              {/* Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={card.image}
@@ -84,22 +83,56 @@ export default function CategoryCardsSection() {
               />
 
               {/* Dark Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/10" />
 
               {/* Top Right External Link Icon */}
-              <div
-                className="absolute top-4 right-4 z-10 w-9 h-9 !rounded-none bg-slate-950/60 backdrop-blur-md text-white flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md"
-                style={{ borderRadius: 0 }}
-              >
+              <div className="absolute top-3 right-3 z-10 w-8 h-8 bg-slate-950/60 backdrop-blur-md text-white flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
                 <ExternalLink className="w-4 h-4" />
               </div>
 
               {/* Content Overlay Bottom */}
-              <div className="relative z-10 space-y-2 text-white">
-                <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white transition-colors">
+              <div className="relative z-10 space-y-1 text-white">
+                <h3 className="text-lg font-extrabold tracking-tight text-white transition-colors">
                   {card.title}
                 </h3>
-                <p className="text-xs sm:text-[13px] text-slate-200 line-clamp-3 leading-relaxed opacity-95">
+                <p className="text-xs text-slate-200 line-clamp-2 leading-relaxed opacity-90">
+                  {card.desc}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop View: 3-Column Grid */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6">
+          {cards.map((card) => (
+            <Link
+              key={card.id}
+              href={card.href}
+              className="relative w-full h-[280px] lg:h-[320px] overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col justify-end p-6 lg:p-7"
+            >
+              {/* Background Image */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={card.image}
+                alt={card.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Dark Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/10" />
+
+              {/* Top Right External Link Icon */}
+              <div className="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-950/60 backdrop-blur-md text-white flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
+                <ExternalLink className="w-4 h-4" />
+              </div>
+
+              {/* Content Overlay Bottom */}
+              <div className="relative z-10 space-y-1.5 text-white">
+                <h3 className="text-xl lg:text-2xl font-extrabold tracking-tight text-white transition-colors">
+                  {card.title}
+                </h3>
+                <p className="text-[13px] text-slate-200 line-clamp-2 leading-relaxed opacity-90">
                   {card.desc}
                 </p>
               </div>

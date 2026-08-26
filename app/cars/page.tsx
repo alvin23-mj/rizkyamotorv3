@@ -208,11 +208,30 @@ function CarsContent() {
                 </p>
               </div>
             ) : cars.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                {cars.map((car) => (
-                  <CarCard key={car.id} car={car} />
-                ))}
-              </div>
+              <>
+                {/* Mobile View: Consecutive Rows of 5 swipeable cards each */}
+                <div className="md:hidden space-y-7">
+                  {Array.from({ length: Math.ceil(cars.length / 5) }, (_, i) => {
+                    const rowCars = cars.slice(i * 5, (i + 1) * 5);
+                    return (
+                      <div key={i} className="flex overflow-x-auto gap-4 pb-3 scrollbar-none snap-x snap-mandatory pt-1">
+                        {rowCars.map((car) => (
+                          <div key={car.id} className="w-[270px] shrink-0 snap-start">
+                            <CarCard car={car} />
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Desktop / Tablet View: Multi-Column Responsive Grid */}
+                <div className="hidden md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                  {cars.map((car) => (
+                    <CarCard key={car.id} car={car} />
+                  ))}
+                </div>
+              </>
             ) : (
               <div className="bg-white border border-dashed border-slate-300 rounded-xl p-12 text-center flex flex-col items-center justify-center space-y-2 w-full">
                 <Frown className="w-10 h-10 text-slate-400 stroke-[1.5] mb-1" />

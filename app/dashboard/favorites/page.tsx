@@ -43,9 +43,6 @@ export default function FavoritesPage() {
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Mobil Favorit Saya
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1">
-              Menyimpan <strong className="text-slate-900">{favoriteList.length}</strong> mobil pilihan Anda.
-            </p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -64,12 +61,24 @@ export default function FavoritesPage() {
           </div>
         </div>
 
-        {/* Favorite Cars Grid - Identical to Catalog Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {favoriteList.map((car) => (
-            <CarCard key={car.id} car={car} />
-          ))}
-        </div>
+        {/* Favorite Cars Display - Horizontal Scroll on Mobile, Grid on Desktop */}
+        <>
+          {/* Mobile View: Horizontal Scroll */}
+          <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-none snap-x snap-mandatory pt-1">
+            {favoriteList.map((car) => (
+              <div key={car.id} className="w-[270px] shrink-0 snap-start">
+                <CarCard car={car} />
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop View: Grid Layout (4 Columns) */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {favoriteList.map((car) => (
+              <CarCard key={car.id} car={car} />
+            ))}
+          </div>
+        </>
       </div>
     </div>
   );

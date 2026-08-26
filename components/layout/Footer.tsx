@@ -40,32 +40,32 @@ export default function Footer() {
   const addressText = locations.length > 0 ? locations[0].address : (settings?.address || 'Alamat Showroom');
 
   return (
-    <footer className="bg-slate-900 text-slate-200 border-t border-slate-800 text-[14px] select-none">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-[13px] sm:text-[14px] select-none">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-10 pb-20 md:pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {/* Column 1: Brand Info */}
-          <div className="space-y-3.5">
+          <div className="space-y-3">
             <div>
-              <span className="text-[24px] font-extrabold text-white uppercase tracking-tight block" style={{ fontSize: '24px' }}>
+              <span className="text-xl sm:text-[22px] md:text-[24px] font-extrabold text-white uppercase tracking-tight block">
                 {showroomName}
               </span>
-              <span className="text-[14px] text-slate-200 font-medium block mt-0.5">
+              <span className="text-xs sm:text-[13px] text-slate-400 font-medium block mt-0.5">
                 Jual Beli Mobil Bekas
               </span>
             </div>
 
-            <p className="text-slate-200 text-[14px] leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-slate-400 leading-relaxed max-w-sm">
               Platform marketplace & showroom mobil terpercaya dengan standar inspeksi transparan dan pelayanan terbaik.
             </p>
 
-            {/* Social Media Links (!rounded-none + hover upward animation) */}
-            <div className="pt-1">
+            {/* Social Media Links */}
+            <div className="pt-0.5">
               <div className="flex items-center gap-2">
                 <a
                   href={settings?.instagramUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white hover:-translate-y-1 flex items-center justify-center transition-transform duration-300"
+                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   style={{ borderRadius: 0 }}
                   title="Instagram"
                 >
@@ -77,7 +77,7 @@ export default function Footer() {
                   href={settings?.facebookUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white hover:-translate-y-1 flex items-center justify-center transition-transform duration-300"
+                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   style={{ borderRadius: 0 }}
                   title="Facebook"
                 >
@@ -89,7 +89,7 @@ export default function Footer() {
                   href={settings?.tiktokUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white hover:-translate-y-1 flex items-center justify-center transition-transform duration-300"
+                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   style={{ borderRadius: 0 }}
                   title="TikTok"
                 >
@@ -101,7 +101,7 @@ export default function Footer() {
                   href={settings?.youtubeUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white hover:-translate-y-1 flex items-center justify-center transition-transform duration-300"
+                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   style={{ borderRadius: 0 }}
                   title="YouTube"
                 >
@@ -113,45 +113,45 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Navigasi */}
-          <div className="space-y-3">
-            <h3 className="text-white text-[16px] font-bold uppercase tracking-wider">
+          {/* Column 2: Navigasi (2 Columns on Mobile, 1 Column on Desktop) */}
+          <div className="space-y-2.5 sm:space-y-3">
+            <h3 className="text-white text-xs sm:text-sm md:text-[15px] font-bold uppercase tracking-wider">
               Navigasi Utama
             </h3>
-            <ul className="space-y-2 text-[14px] text-slate-200">
+            <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-3 gap-y-2 text-xs sm:text-[13px] md:text-[14px] text-slate-300">
               <li>
-                <Link href="/cars" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
+                <Link href="/cars" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>Katalog Mobil</span>
                 </Link>
               </li>
               <li>
-                <Link href="/sell" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
+                <Link href="/sell" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>Jual Kendaraan</span>
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
-                  <span>Komparasi Spesifikasi</span>
+                <Link href="/compare" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span>Komparasi</span>
                 </Link>
               </li>
               <li>
-                <Link href="/events" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
+                <Link href="/events" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>Acara & Event</span>
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
+                <Link href="/about" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>Tentang Kami</span>
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-200" />
+                <Link href="/contact" className="hover:text-white transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>Kontak Kami</span>
                 </Link>
               </li>
@@ -159,29 +159,29 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Hubungi Kami */}
-          <div className="space-y-3">
-            <h3 className="text-white text-[16px] font-bold uppercase tracking-wider">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h3 className="text-white text-xs sm:text-sm md:text-[15px] font-bold uppercase tracking-wider">
               Hubungi Kami
             </h3>
-            <div className="space-y-2.5 text-[14px] text-slate-200">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-slate-200 shrink-0 mt-0.5" />
-                <span>{addressText}</span>
+            <div className="space-y-2 text-xs sm:text-[13px] md:text-[14px] text-slate-300">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                <span className="leading-snug">{addressText}</span>
               </div>
-              <div className="flex items-center gap-2.5">
-                <PhoneCall className="w-4 h-4 text-slate-200 shrink-0" />
-                <span className="text-slate-200 font-medium">{phoneNumber}</span>
+              <div className="flex items-center gap-2 pt-0.5">
+                <PhoneCall className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <span className="text-white font-semibold">{phoneNumber}</span>
               </div>
             </div>
           </div>
 
           {/* Column 4: Lokasi Map */}
-          <div className="space-y-3">
-            <h3 className="text-white text-[16px] font-bold uppercase tracking-wider">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h3 className="text-white text-xs sm:text-sm md:text-[15px] font-bold uppercase tracking-wider">
               Lokasi Showroom
             </h3>
             <div
-              className="!rounded-none overflow-hidden border border-slate-800 bg-slate-800 h-[120px] relative"
+              className="!rounded-none overflow-hidden border border-slate-800 bg-slate-800 h-[100px] sm:h-[110px] md:h-[120px] relative"
               style={{ borderRadius: 0 }}
             >
               <iframe
@@ -203,18 +203,18 @@ export default function Footer() {
               href="https://www.google.com/maps/place/Rizkya+Mobil/@-7.6586549,111.9367471,17z/data=!4m15!1m8!3m7!1s0x2e784dabfa19518f:0xef795007f00d9a93!2sRizkya+Mobil!8m2!3d-7.6586549!4d111.9367471"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[14px] text-slate-200 hover:text-white hover:underline flex items-center gap-1 transition-colors"
+              className="text-xs sm:text-[13px] text-slate-400 hover:text-white hover:underline flex items-center gap-1 transition-colors"
             >
               <span>Buka di Google Maps</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="border-t border-slate-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-slate-200">
+        <div className="border-t border-slate-800 mt-6 md:mt-8 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-[13px] text-slate-400">
           <p>© {new Date().getFullYear()} {showroomName}. Hak Cipta Dilindungi.</p>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center space-x-4">
             <Link href="/privacy" className="hover:text-white hover:underline transition-colors">Kebijakan Privasi</Link>
             <Link href="/terms" className="hover:text-white hover:underline transition-colors">Syarat & Ketentuan</Link>
             <button
@@ -223,7 +223,7 @@ export default function Footer() {
               className="flex items-center gap-1 hover:text-white hover:underline transition-colors cursor-pointer"
             >
               <span>Ke Atas</span>
-              <ArrowUp className="w-3.5 h-3.5" />
+              <ArrowUp className="w-3 h-3" />
             </button>
           </div>
         </div>

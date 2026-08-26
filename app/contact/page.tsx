@@ -76,20 +76,15 @@ export default function ContactPage() {
                 Hubungi <span className="text-orange-600">Kami,</span> <br />
                 <span className="text-orange-600">Siap</span> Melayani Anda.
               </h1>
-              <p className="text-xs sm:text-sm text-slate-500 mt-3 leading-relaxed">
-                Punya pertanyaan seputar unit mobil, konsultasi garansi, simulasi kredit, atau ingin menjadwalkan test drive? Tim konsultan kami siap melayani Anda.
-              </p>
             </div>
 
             <div className="border-t border-slate-200" />
 
-            {/* 4 Info Blocks in 2x2 Grid with Website Palette (Slate 900 Icon Boxes) */}
+            {/* 4 Info Blocks in 2x2 Grid - Plain Icons matching text */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Kantor Pusat */}
-              <div className="flex items-start gap-3.5">
-                <div className="w-11 h-11 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs font-bold">
-                  <MapPin className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">Kantor Pusat</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-snug">
@@ -99,10 +94,8 @@ export default function ContactPage() {
               </div>
 
               {/* Dukungan Email */}
-              <div className="flex items-start gap-3.5">
-                <div className="w-11 h-11 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs font-bold">
-                  <Mail className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">Dukungan Email</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-snug break-all">
@@ -112,10 +105,8 @@ export default function ContactPage() {
               </div>
 
               {/* Hubungi Kami */}
-              <div className="flex items-start gap-3.5">
-                <div className="w-11 h-11 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs font-bold">
-                  <PhoneCall className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3">
+                <PhoneCall className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">Telepon & WA</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-snug">
@@ -125,10 +116,8 @@ export default function ContactPage() {
               </div>
 
               {/* Jam Operasional */}
-              <div className="flex items-start gap-3.5">
-                <div className="w-11 h-11 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs font-bold">
-                  <Clock className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">Jam Operasional</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-snug">
@@ -220,9 +209,6 @@ export default function ContactPage() {
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Kirimkan Pesan
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                Isi formulir di bawah ini dan konsultan showroom kami akan menghubungi Anda segera.
-              </p>
             </div>
 
             {submitted ? (

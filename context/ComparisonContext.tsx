@@ -67,10 +67,18 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
   );
 }
 
+const defaultComparisonContext: ComparisonContextType = {
+  comparisonList: [],
+  addToComparison: () => {},
+  removeFromComparison: () => {},
+  isInComparison: () => false,
+  clearComparison: () => {},
+};
+
 export function useComparison() {
   const context = useContext(ComparisonContext);
   if (!context) {
-    throw new Error('useComparison must be used within a ComparisonProvider');
+    return defaultComparisonContext;
   }
   return context;
 }

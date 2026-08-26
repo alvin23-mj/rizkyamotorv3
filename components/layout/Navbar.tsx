@@ -44,8 +44,10 @@ export default function Navbar() {
   const [locations, setLocations] = useState<any[]>([]);
   const [catalogCars, setCatalogCars] = useState<any[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     fetch('/api/settings')
       .then((res) => res.json())
       .then((data) => {
@@ -130,6 +132,20 @@ export default function Navbar() {
   const userRole = (session?.user as any)?.role;
   const isAdmin = userRole === 'ADMIN_SHOWROOM' || userRole === 'ADMIN';
   const dashboardHref = isAdmin ? '/dashboard/admin' : '/dashboard';
+
+  // Live filter catalog cars based on searchQuery
+  const filteredCars = (() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase().trim();
+    return catalogCars.filter((car) => {
+      const titleMatch = car.title?.toLowerCase().includes(query);
+      const brandMatch = car.brand?.toLowerCase().includes(query);
+      const modelMatch = car.model?.toLowerCase().includes(query);
+      const bodyMatch = car.bodyType?.toLowerCase().includes(query);
+      const yearMatch = car.year?.toString().includes(query);
+      return titleMatch || brandMatch || modelMatch || bodyMatch || yearMatch;
+    });
+  })();
 
   // Do not render Navbar on login and register pages
   if (pathname === '/login' || pathname === '/register') {
@@ -274,11 +290,11 @@ export default function Navbar() {
           {/* Favorites Link */}
           <Link
             href="/favorites"
-            className="p-2 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors relative hidden sm:flex"
+            className="p-2 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors relative flex items-center justify-center"
             title="Mobil Favorit"
           >
             <Heart className="w-5 h-5" />
-            {favoriteList.length > 0 && (
+            {mounted && favoriteList.length > 0 && (
               <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-rose-500 text-white rounded-full text-[10px] font-extrabold flex items-center justify-center">
                 {favoriteList.length}
               </span>
@@ -288,11 +304,11 @@ export default function Navbar() {
           {/* Compare Link */}
           <Link
             href="/compare"
-            className="p-2 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors relative hidden sm:flex"
+            className="p-2 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors relative flex items-center justify-center"
             title="Komparasi Unit"
           >
             <Scale className="w-5 h-5" />
-            {comparisonList.length > 0 && (
+            {mounted && comparisonList.length > 0 && (
               <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-slate-900 text-white rounded-full text-[10px] font-extrabold flex items-center justify-center">
                 {comparisonList.length}
               </span>
@@ -302,9 +318,9 @@ export default function Navbar() {
           {/* Vertical Divider | */}
           <div className="h-4 w-px bg-slate-300 mx-1 hidden sm:block" />
 
-          {/* User Auth Profile Dropdown or Login Link */}
-          {session ? (
-            <div className="relative">
+          {/* User Auth Profile Dropdown or Login Link (Desktop Only) */}
+          {mounted && session ? (
+            <div className="relative hidden lg:block">
               <button
                 suppressHydrationWarning
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
@@ -356,20 +372,11 @@ export default function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="text-slate-900 font-bold text-[15px] hover:text-black transition-colors px-1 py-1"
+              className="text-slate-900 font-bold text-[15px] hover:text-black transition-colors px-1 py-1 hidden lg:block"
             >
               Masuk
             </Link>
           )}
-
-          {/* Mobile Menu Toggle Button */}
-          <button
-            suppressHydrationWarning
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-800 hover:text-slate-900 rounded-lg hover:bg-slate-100"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
       </div>
 
@@ -390,25 +397,9 @@ export default function Navbar() {
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari berdasarkan merek, model (ex: Honda HRV, Innova)..."
+                placeholder="Ketik merek atau model (contoh: Toyota, Avanza, HRV)..."
                 className="w-full bg-transparent text-slate-900 text-sm sm:text-base font-medium focus:outline-none placeholder:text-slate-400"
               />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
-                  title="Hapus teks"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-              <button
-                type="submit"
-                className="bg-slate-900 hover:bg-black text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-colors shrink-0 cursor-pointer"
-              >
-                Cari
-              </button>
               <button
                 type="button"
                 onClick={() => setSearchModalOpen(false)}
@@ -419,58 +410,62 @@ export default function Navbar() {
               </button>
             </form>
 
-            {/* Quick Popular Keywords */}
-            <div className="bg-slate-50/70 p-4 sm:p-5 text-xs">
-              <p className="font-bold text-slate-400 uppercase tracking-wider text-[11px] mb-2.5">
-                Pencarian Populer
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['Toyota', 'Honda', 'Mitsubishi', 'SUV', 'Automatic', 'Bensin', 'Innova', 'Fortuner', 'HR-V'].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery(tag);
-                      router.push(`/cars?search=${encodeURIComponent(tag)}`);
-                      setSearchModalOpen(false);
-                    }}
-                    className="px-3 py-1.5 bg-white hover:bg-slate-900 hover:text-white border border-slate-200 text-slate-700 font-semibold rounded-lg shadow-2xs transition-all cursor-pointer"
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            {/* Live Search Suggestions */}
+            {searchQuery.trim() ? (
+              <div className="bg-slate-50/70 p-4 sm:p-5 text-xs max-h-[60vh] overflow-y-auto border-t border-slate-100">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between pb-1">
+                    <p className="font-bold text-slate-500 text-[11px] uppercase tracking-wider">
+                      Hasil Pencarian Langsung
+                    </p>
+                  </div>
 
-      {/* Mobile Drawer Navigation Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-5 space-y-3">
-          <nav className="flex flex-col space-y-1 text-sm font-bold text-slate-800">
-            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Beranda</span>
-            </Link>
-            <Link href="/cars" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Katalog Mobil</span>
-            </Link>
-            <Link href="/schedule" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Jadwal Test Drive</span>
-            </Link>
-            <Link href="/sell" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Jual Kendaraan</span>
-            </Link>
-            <Link href="/compare" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Komparasi Unit</span>
-            </Link>
-            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="py-2.5 border-b border-slate-100 flex items-center justify-between">
-              <span>Tentang Kami</span>
-            </Link>
-            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="py-2.5 flex items-center justify-between">
-              <span>Kontak Kami</span>
-            </Link>
-          </nav>
+                  {filteredCars.length > 0 ? (
+                    <div className="divide-y divide-slate-200/60 bg-white border border-slate-200 shadow-2xs">
+                      {filteredCars.slice(0, 8).map((car) => (
+                        <div
+                          key={car.id}
+                          onClick={() => {
+                            router.push(`/cars/${car.id}`);
+                            setSearchModalOpen(false);
+                          }}
+                          className="p-3 flex items-center gap-3.5 hover:bg-slate-100 transition-colors cursor-pointer"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={
+                              car.images && car.images.length > 0
+                                ? car.images[0].url
+                                : 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80'
+                            }
+                            alt={car.title}
+                            className="w-14 h-10 object-cover border border-slate-200 shrink-0"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-slate-900 text-xs truncate">{car.title}</p>
+                            <div className="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5">
+                              <span>{car.brand}</span>
+                              <span>•</span>
+                              <span>{car.year}</span>
+                              <span>•</span>
+                              <span className="font-bold text-slate-900">
+                                Rp {Number(car.price || 0).toLocaleString('id-ID')}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-6 text-slate-500 space-y-2">
+                      <p className="text-xs">Tidak ada unit mobil yang cocok dengan &quot;{searchQuery}&quot;</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
       )}
     </header>

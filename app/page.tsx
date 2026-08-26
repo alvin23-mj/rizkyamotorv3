@@ -33,7 +33,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-16 pb-20 bg-white text-slate-800">
+    <div className="space-y-6 md:space-y-16 pb-0 md:pb-16 bg-white text-slate-800">
       {/* 1. Pure Image Hero Carousel Banner Slider */}
       <HeroCarousel banners={heroBannerUrls.length > 0 ? heroBannerUrls : undefined} />
 
@@ -42,7 +42,7 @@ export default async function HomePage() {
         <BrandCarousel />
       </section>
 
-      {/* 3. Featured Showroom Inventory Section (Mobil Terbaru - 4 Cards Only) */}
+      {/* 3. Featured Showroom Inventory Section (Mobil Terbaru) */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6 gap-4">
           <h2 className="text-xl sm:text-[24px] font-extrabold text-slate-900 tracking-tight">
@@ -57,11 +57,23 @@ export default async function HomePage() {
         </div>
 
         {featuredCars.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCars.slice(0, 4).map((car: any) => (
-              <CarCard key={car.id} car={car} />
-            ))}
-          </div>
+          <>
+            {/* Mobile View: Horizontal Scroll for 5 cards */}
+            <div className="flex md:hidden overflow-x-auto gap-4 pb-4 scrollbar-none snap-x snap-mandatory pt-1">
+              {featuredCars.slice(0, 5).map((car: any) => (
+                <div key={car.id} className="w-[270px] shrink-0 snap-start">
+                  <CarCard car={car} />
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop View: Grid Layout (4 Columns) */}
+            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredCars.slice(0, 4).map((car: any) => (
+                <CarCard key={car.id} car={car} />
+              ))}
+            </div>
+          </>
         ) : (
           <div className="bg-white border border-dashed border-slate-300 rounded-md p-12 text-center flex flex-col items-center justify-center">
             <Frown className="w-10 h-10 text-slate-400 mx-auto mb-3 stroke-[1.5]" />

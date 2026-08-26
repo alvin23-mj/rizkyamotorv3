@@ -43,11 +43,13 @@ export default function SchedulePage() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const tomorrowStr = (() => {
+  const getTomorrowStr = () => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
     return d.toISOString().split('T')[0];
-  })();
+  };
+
+  const tomorrowStr = getTomorrowStr();
   const [selectedDate, setSelectedDate] = useState(tomorrowStr);
 
   const [cars, setCars] = useState<CarListing[]>([]);
@@ -219,6 +221,89 @@ export default function SchedulePage() {
     setSelectedDate(nextDateStr);
   };
 
+  const renderSlotCard = (slotObj: { timeSlot: string; maxQuota: number; isActive: boolean }) => {
+    const slotTime = slotObj.timeSlot;
+    const MAX_CAPACITY = slotObj.maxQuota || 1;
+    const slotBookings = getSlotBookings(slotTime);
+    const isFull = slotBookings.length >= MAX_CAPACITY;
+    const remainingSlots = Math.max(0, MAX_CAPACITY - slotBookings.length);
+    const isClosed = Boolean(closures.find((c) => c.closedDate === selectedDate));
+
+    return (
+      <div
+        className={`relative !rounded-none p-4 sm:p-5 flex flex-col justify-between text-center min-h-[220px] sm:min-h-[260px] h-full transition-all select-none overflow-hidden border border-slate-100 ${
+          isFull
+            ? 'bg-slate-100/90 text-slate-900 shadow-2xs opacity-70 cursor-default'
+            : 'bg-white text-slate-900 shadow-md cursor-default'
+        }`}
+        style={{ borderRadius: 0 }}
+      >
+        {/* Top Ticket Stub Header: Time */}
+        <div className="pb-3 border-b-2 border-dashed border-slate-200/80 relative">
+          <span className="block font-black text-xs sm:text-sm text-slate-900 tracking-wider">
+            {slotTime}
+          </span>
+        </div>
+
+        {/* Ticket Notch Semicircular Cutouts on Left & Right */}
+        <div className="absolute top-[34px] sm:top-[38px] -left-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
+        <div className="absolute top-[34px] sm:top-[38px] -right-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
+
+        {/* Middle Ticket Section: Status Badge */}
+        <div className="py-2.5 sm:py-3 flex justify-center">
+          {isFull ? (
+            <span
+              className="bg-slate-200 text-slate-700 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
+              style={{ borderRadius: 0 }}
+            >
+              Sudah Penuh
+            </span>
+          ) : slotBookings.length > 0 ? (
+            <span
+              className="bg-amber-50 text-amber-700 border border-amber-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
+              style={{ borderRadius: 0 }}
+            >
+              Dipesan
+            </span>
+          ) : (
+            <span
+              className="bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
+              style={{ borderRadius: 0 }}
+            >
+              Tersedia
+            </span>
+          )}
+        </div>
+
+        {/* Bottom Ticket Stub Body: Details */}
+        <div className="pt-1.5 sm:pt-2">
+          {slotBookings.length > 0 ? (
+            <div>
+              {!isFull ? (
+                <p className="text-[10px] sm:text-[11px] text-slate-900 font-semibold leading-snug">
+                  Masih tersedia di jam ini untuk Anda.
+                </p>
+              ) : (
+                <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium leading-snug">
+                  Seluruh kuota di jam ini telah terisi.
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-1">
+              <p className="font-extrabold text-slate-900 text-[11px] sm:text-xs tracking-tight">
+                Waktu Siap Dipesan
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-slate-600 leading-relaxed line-clamp-2">
+                Silakan pesan untuk jadwal kunjungan & test drive.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white min-h-screen pb-16 text-slate-800">
       {/* Pure Hero Image Banner (Without Text) */}
@@ -230,37 +315,38 @@ export default function SchedulePage() {
           className="w-full h-full object-cover object-center"
         />
       </div>
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-10 space-y-5 sm:space-y-8">
         {/* Combined Date Selector & Legend Card (White, No Outline, With Shadow) */}
-        <div className="bg-white rounded-lg p-5 sm:p-6 shadow-md space-y-4">
+        <div className="bg-white rounded-lg p-3.5 sm:p-6 shadow-sm sm:shadow-md space-y-2.5 sm:space-y-4">
           {/* Top Row: Date Selector & Input */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-row flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
+            <div className="flex items-center gap-1 sm:gap-2">
               <button
                 onClick={() => changeDateByDays(-1)}
-                className="p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
+                className="p-1.5 sm:p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
                 title="Hari Sebelumnya"
               >
-                <ChevronLeft className="w-4 h-4 text-slate-700" />
+                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />
               </button>
 
-              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-2 rounded-md text-xs font-extrabold text-slate-900">
-                <CalendarIcon className="w-4 h-4 text-slate-800" />
+              <div suppressHydrationWarning className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-md text-[11px] sm:text-xs font-extrabold text-slate-900">
+                <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
                 <span>Tanggal: {selectedDate}</span>
               </div>
 
               <button
                 onClick={() => changeDateByDays(1)}
-                className="p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
+                className="p-1.5 sm:p-2 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors"
                 title="Hari Berikutnya"
               >
-                <ChevronRight className="w-4 h-4 text-slate-700" />
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />
               </button>
             </div>
 
             {/* Quick Date Selector Input */}
-            <div className="flex items-center gap-2 overflow-x-auto">
+            <div className="flex items-center gap-2">
               <input
+                suppressHydrationWarning
                 type="date"
                 min={tomorrowStr}
                 value={selectedDate}
@@ -271,14 +357,14 @@ export default function SchedulePage() {
                     alert('Booking jadwal minimal H-1 hari (mulai besok).');
                   }
                 }}
-                className="bg-slate-50 border border-slate-200 text-xs rounded-md px-3 py-2 text-slate-900 font-medium cursor-pointer"
+                className="bg-slate-50 border border-slate-200 text-[11px] sm:text-xs rounded-md px-2.5 py-1.5 sm:px-3 sm:py-2 text-slate-900 font-medium cursor-pointer"
               />
             </div>
           </div>
 
           {/* NB Note Keterangan */}
-          <div className="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
-            <span className="font-bold text-amber-600">NB:</span>
+          <div className="pt-2 border-t border-slate-100 flex items-start sm:items-center gap-1.5 text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight">
+            <span className="font-bold text-amber-600 shrink-0">NB:</span>
             <span>Jadwal kunjungan & test drive hanya dapat dilihat mulai H-1 (mulai besok).</span>
           </div>
         </div>
@@ -290,91 +376,25 @@ export default function SchedulePage() {
             <p>Memuat ketersediaan jadwal tanggal {selectedDate}...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {operatingHours.map((slotObj) => {
-              const slotTime = slotObj.timeSlot;
-              const MAX_CAPACITY = slotObj.maxQuota || 1;
-              const slotBookings = getSlotBookings(slotTime);
-              const isFull = slotBookings.length >= MAX_CAPACITY;
-              const remainingSlots = Math.max(0, MAX_CAPACITY - slotBookings.length);
-              const isClosed = Boolean(closures.find((c) => c.closedDate === selectedDate));
-
-              return (
-                <div
-                  key={slotTime}
-                  className={`relative !rounded-none p-5 flex flex-col justify-between text-center min-h-[250px] sm:min-h-[280px] transition-all select-none overflow-hidden ${
-                    isFull
-                      ? 'bg-slate-100/90 text-slate-900 shadow-2xs opacity-70 cursor-default'
-                      : 'bg-white text-slate-900 shadow-md cursor-default'
-                  }`}
-                  style={{ borderRadius: 0 }}
-                >
-                  {/* Top Ticket Stub Header: Time */}
-                  <div className="pb-3.5 border-b-2 border-dashed border-slate-200/80 relative">
-                    <span className="block font-black text-xs sm:text-sm text-slate-900 tracking-wider">
-                      {slotTime}
-                    </span>
-                  </div>
-
-                  {/* Ticket Notch Semicircular Cutouts on Left & Right */}
-                  <div className="absolute top-[38px] -left-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
-                  <div className="absolute top-[38px] -right-2.5 w-5 h-5 rounded-full bg-slate-50 shadow-inner pointer-events-none" />
-
-                  {/* Middle Ticket Section: Status Badge */}
-                  <div className="py-3 flex justify-center">
-                    {isFull ? (
-                      <span
-                        className="bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
-                        style={{ borderRadius: 0 }}
-                      >
-                        Sudah Penuh
-                      </span>
-                    ) : slotBookings.length > 0 ? (
-                      <span
-                        className="bg-amber-50 text-amber-700 border border-amber-300 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
-                        style={{ borderRadius: 0 }}
-                      >
-                        Dipesan
-                      </span>
-                    ) : (
-                      <span
-                        className="bg-emerald-50 text-emerald-700 border border-emerald-300 text-[11px] font-extrabold px-3 py-1 !rounded-none tracking-wider uppercase"
-                        style={{ borderRadius: 0 }}
-                      >
-                        Tersedia
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Bottom Ticket Stub Body: Details */}
-                  <div className="pt-2">
-                    {slotBookings.length > 0 ? (
-                      <div>
-                        {!isFull ? (
-                          <p className="text-[11px] text-slate-900 font-semibold leading-snug">
-                            Masih tersedia di jam ini untuk Anda.
-                          </p>
-                        ) : (
-                          <p className="text-[11px] text-slate-600 font-medium leading-snug">
-                            Seluruh kuota di jam ini telah terisi.
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="space-y-1">
-                        <p className="font-extrabold text-slate-900 text-xs tracking-tight">
-                          Waktu Siap Dipesan
-                        </p>
-                        <p className="text-[11px] text-slate-600 leading-relaxed">
-                          Silakan pesan untuk jadwal kunjungan & test drive.
-                        </p>
-                      </div>
-                    )}
-                  </div>
+          <>
+            {/* Mobile View: Horizontal Scroll Slider */}
+            <div className="flex md:hidden overflow-x-auto gap-3.5 pb-4 scrollbar-none snap-x snap-mandatory pt-1">
+              {operatingHours.map((slotObj) => (
+                <div key={slotObj.timeSlot} className="w-[190px] shrink-0 snap-start">
+                  {renderSlotCard(slotObj)}
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+
+            {/* Desktop View: Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {operatingHours.map((slotObj) => (
+                <div key={slotObj.timeSlot}>
+                  {renderSlotCard(slotObj)}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

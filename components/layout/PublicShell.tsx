@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ComparisonDrawer from '@/components/cars/ComparisonDrawer';
 import ChatbotWidget from '@/components/layout/ChatbotWidget';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
 
 export default function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -62,6 +63,7 @@ export default function PublicShell({ children }: { children: React.ReactNode })
       <main className="flex-grow">{children}</main>
       <ComparisonDrawer />
       <Footer />
+      <MobileBottomNav />
     </>
   );
 }

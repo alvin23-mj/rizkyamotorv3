@@ -233,9 +233,6 @@ export default function SellToShowroomPage() {
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Formulir Penawaran Jual Mobil
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                Lengkapi spesifikasi mobil bekas Anda secara akurat untuk estimasi penawaran terbaik.
-              </p>
             </div>
 
             {errorMsg && (
