@@ -65,8 +65,7 @@ export default function Footer() {
                   href={settings?.instagramUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
-                  style={{ borderRadius: 0 }}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   title="Instagram"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -77,8 +76,7 @@ export default function Footer() {
                   href={settings?.facebookUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
-                  style={{ borderRadius: 0 }}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   title="Facebook"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -89,8 +87,7 @@ export default function Footer() {
                   href={settings?.tiktokUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
-                  style={{ borderRadius: 0 }}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   title="TikTok"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -101,8 +98,7 @@ export default function Footer() {
                   href={settings?.youtubeUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-7 h-7 sm:w-8 sm:h-8 !rounded-none bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
-                  style={{ borderRadius: 0 }}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white hover:-translate-y-0.5 flex items-center justify-center transition-transform duration-200"
                   title="YouTube"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -181,8 +177,7 @@ export default function Footer() {
               Lokasi Showroom
             </h3>
             <div
-              className="!rounded-none overflow-hidden border border-slate-800 bg-slate-800 h-[100px] sm:h-[110px] md:h-[120px] relative"
-              style={{ borderRadius: 0 }}
+              className="rounded-md overflow-hidden border border-slate-800 bg-slate-800 h-[100px] sm:h-[110px] md:h-[120px] relative"
             >
               <iframe
                 src={

@@ -149,8 +149,7 @@ export default function CarCard({
   return (
     <Link
       href={`/cars/${car.id}`}
-      className="group bg-white !rounded-none overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full block cursor-pointer border-0"
-      style={{ borderRadius: 0 }}
+      className="group bg-white rounded-md overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full block cursor-pointer border-0"
     >
       {/* Image Container */}
       <div className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden block">

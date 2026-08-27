@@ -332,7 +332,7 @@ export default function Navbar() {
 
               {profileDropdownOpen && (
                 <div
-                  className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 shadow-2xl py-2 z-50 text-xs text-slate-800 rounded-none"
+                  className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 shadow-2xl py-2 z-50 text-xs text-slate-800 rounded-md"
                   onMouseLeave={() => setProfileDropdownOpen(false)}
                 >
                   <div className="px-4 py-2 border-b border-slate-100">
@@ -343,7 +343,7 @@ export default function Navbar() {
                   <Link
                     href={dashboardHref}
                     onClick={() => setProfileDropdownOpen(false)}
-                    className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-semibold flex items-center gap-2 rounded-none"
+                    className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-semibold flex items-center gap-2"
                   >
                     <LayoutDashboard className="w-4 h-4 text-slate-800" />
                     <span>Dashboard</span>
@@ -352,7 +352,7 @@ export default function Navbar() {
                   <Link
                     href={isAdmin ? '/dashboard/admin/profile' : '/dashboard/profile'}
                     onClick={() => setProfileDropdownOpen(false)}
-                    className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-semibold flex items-center gap-2 rounded-none"
+                    className="px-4 py-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-semibold flex items-center gap-2"
                   >
                     <User className="w-4 h-4 text-slate-800" />
                     <span>Profil & Akun</span>
@@ -361,7 +361,7 @@ export default function Navbar() {
                   <button
                     suppressHydrationWarning
                     onClick={() => signOut()}
-                    className="w-full text-left px-4 py-2.5 text-rose-600 hover:bg-rose-50 flex items-center gap-2 font-semibold cursor-pointer rounded-none"
+                    className="w-full text-left px-4 py-2.5 text-rose-600 hover:bg-rose-50 flex items-center gap-2 font-semibold cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Keluar</span>

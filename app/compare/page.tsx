@@ -100,13 +100,13 @@ export default function ComparePage() {
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               onClick={clearComparison}
-              className="flex-1 sm:flex-initial text-center text-xs font-bold text-slate-900 bg-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-none border border-slate-200 cursor-pointer hover:-translate-y-0.5 transition-transform"
+              className="flex-1 sm:flex-initial text-center text-xs font-bold text-slate-900 bg-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-md border border-slate-200 cursor-pointer hover:-translate-y-0.5 transition-transform"
             >
               Hapus Semua
             </button>
             <Link
               href="/cars"
-              className="flex-1 sm:flex-initial text-center text-xs font-bold text-white bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-none cursor-pointer hover:-translate-y-0.5 transition-transform inline-block"
+              className="flex-1 sm:flex-initial text-center text-xs font-bold text-white bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-md cursor-pointer hover:-translate-y-0.5 transition-transform inline-block"
             >
               + Tambah Mobil
             </Link>

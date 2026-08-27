@@ -140,7 +140,7 @@ export default function ContactPage() {
                   href={settings?.facebookUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-none bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
                   title="Facebook"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -153,7 +153,7 @@ export default function ContactPage() {
                   href={settings?.instagramUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-none bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
                   title="Instagram"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@ export default function ContactPage() {
                   href={settings?.tiktokUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-none bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
                   title="TikTok"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -179,7 +179,7 @@ export default function ContactPage() {
                   href={settings?.youtubeUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-none bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
                   title="YouTube"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -192,7 +192,7 @@ export default function ContactPage() {
                   href={`https://wa.me/${settings?.whatsapp || '6281299887766'}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-none bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
+                  className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center transition-transform hover:-translate-y-1 cursor-pointer"
                   title="WhatsApp Sales"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -204,7 +204,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right Column: Kirimkan Pesan Card */}
-          <div className="lg:col-span-7 bg-white rounded-none p-6 sm:p-10 shadow-lg border-0 space-y-6">
+          <div className="lg:col-span-7 bg-white rounded-md p-6 sm:p-10 shadow-lg border-0 space-y-6">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Kirimkan Pesan
@@ -225,7 +225,7 @@ export default function ContactPage() {
                     href={`https://wa.me/${settings?.whatsapp || '6281299887766'}?text=${waText}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-6 py-3 rounded-none shadow-xs"
+                    className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-6 py-3 rounded-md shadow-xs"
                   >
                     Lanjutkan ke WhatsApp
                   </a>
@@ -241,7 +241,7 @@ export default function ContactPage() {
                         message: '',
                       });
                     }}
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-6 py-3 rounded-none border border-slate-300"
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-6 py-3 rounded-md border border-slate-300"
                   >
                     Kirim Pesan Lain
                   </button>
@@ -259,7 +259,7 @@ export default function ContactPage() {
                       placeholder="Nama Lengkap Anda"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -270,7 +270,7 @@ export default function ContactPage() {
                       placeholder="Nama Perusahaan (Opsional)"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function ContactPage() {
                       placeholder="08123456789"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -297,7 +297,7 @@ export default function ContactPage() {
                       placeholder="nama@email.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export default function ContactPage() {
                     placeholder="Subjek / Topik Pertanyaan"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                    className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                   />
                 </div>
 
@@ -323,7 +323,7 @@ export default function ContactPage() {
                     placeholder="Tuliskan pesan atau pertanyaan Anda disini..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400 resize-none"
+                    className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400 resize-none"
                   />
                 </div>
 
@@ -331,7 +331,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 rounded-none shadow-md tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-60"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 rounded-md shadow-md tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
                   <span>{loading ? 'Mengirim Pesan...' : 'Kirim Pesan'}</span>

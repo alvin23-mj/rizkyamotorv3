@@ -70,8 +70,7 @@ export default function LocationSection() {
             return (
               <div
                 key={loc.id || idx}
-                className={`relative w-full ${cardHeightClass} !rounded-none overflow-hidden text-left transition-all duration-300 group border-0 shadow-xl hover:shadow-2xl flex flex-col justify-end`}
-                style={{ borderRadius: 0 }}
+                className={`relative w-full ${cardHeightClass} rounded-md overflow-hidden text-left transition-all duration-300 group border-0 shadow-xl hover:shadow-2xl flex flex-col justify-end`}
               >
                 {/* Google Maps Iframe */}
                 <iframe

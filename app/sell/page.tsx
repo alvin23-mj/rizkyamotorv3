@@ -203,8 +203,8 @@ export default function SellToShowroomPage() {
 
         {/* Form Container */}
         {success ? (
-          <div className="bg-slate-50 border border-slate-200 rounded-none p-10 text-center space-y-4 max-w-xl mx-auto">
-            <div className="w-14 h-14 bg-slate-900 text-white rounded-none border border-slate-800 flex items-center justify-center mx-auto shadow-md">
+          <div className="bg-slate-50 border border-slate-200 rounded-md p-10 text-center space-y-4 max-w-xl mx-auto">
+            <div className="w-14 h-14 bg-slate-900 text-white rounded-md border border-slate-800 flex items-center justify-center mx-auto shadow-md">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold text-slate-900">Pengajuan Berhasil Dikirim!</h3>
@@ -215,20 +215,20 @@ export default function SellToShowroomPage() {
             <div className="pt-4 flex justify-center gap-3">
               <button
                 onClick={() => setSuccess(false)}
-                className="bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold px-5 py-2.5 rounded-none border border-slate-300"
+                className="bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold px-5 py-2.5 rounded-md border border-slate-300"
               >
                 Kirim Mobil Lain
               </button>
               <button
                 onClick={() => router.push('/cars')}
-                className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-none shadow-xs"
+                className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-md shadow-xs"
               >
                 Lihat Stok Showroom
               </button>
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-none p-6 sm:p-10 shadow-lg border-0 w-full space-y-6">
+          <div className="bg-white rounded-md p-6 sm:p-10 shadow-lg border-0 w-full space-y-6">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Formulir Penawaran Jual Mobil
@@ -236,7 +236,7 @@ export default function SellToShowroomPage() {
             </div>
 
             {errorMsg && (
-              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-none flex items-center gap-2">
+              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-md flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMsg}</span>
               </div>
@@ -260,7 +260,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Budi Santoso"
                       value={formData.customerName}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -275,7 +275,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 08123456789"
                       value={formData.customerPhone}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -289,7 +289,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Jakarta Selatan"
                       value={formData.city}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -311,7 +311,7 @@ export default function SellToShowroomPage() {
                       required
                       value={formData.brand}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="">Pilih Merek</option>
                       <option value="Toyota">Toyota</option>
@@ -337,7 +337,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: Innova Venturer 2.4 AT"
                       value={formData.model}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -352,7 +352,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 2020"
                       value={formData.year}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -364,7 +364,7 @@ export default function SellToShowroomPage() {
                       name="transmission"
                       value={formData.transmission}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="Automatic">Automatic</option>
                       <option value="Manual">Manual</option>
@@ -379,7 +379,7 @@ export default function SellToShowroomPage() {
                       name="fuelType"
                       value={formData.fuelType}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     >
                       <option value="Pertalite/Bensin">Bensin</option>
                       <option value="Diesel">Diesel</option>
@@ -398,7 +398,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 35000"
                       value={formData.mileage}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -422,7 +422,7 @@ export default function SellToShowroomPage() {
                       placeholder="Contoh: 250000000"
                       value={formData.expectedPrice}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all placeholder:text-slate-400"
                     />
                   </div>
 
@@ -437,7 +437,7 @@ export default function SellToShowroomPage() {
                       min={getTomorrowStr()}
                       value={formData.inspectionDate}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
                     />
                     {formData.inspectionDate && (
                       <p className="text-[11px] font-bold text-emerald-700 mt-1">
@@ -461,7 +461,7 @@ export default function SellToShowroomPage() {
                       required
                       value={formData.inspectionTime}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 font-semibold cursor-pointer transition-all placeholder:text-slate-400"
                     >
                       {availableSlots.map((slot) => (
                         <option key={slot} value={slot}>
@@ -481,7 +481,7 @@ export default function SellToShowroomPage() {
                       placeholder="Jelaskan kondisi riil, servis rutin, pajak, atau apakah ada bekas lecet/baret..."
                       value={formData.description}
                       onChange={handleChange}
-                      className="w-full bg-slate-100 border-0 rounded-none px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none transition-all placeholder:text-slate-400"
+                      className="w-full bg-slate-100 border-0 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none transition-all placeholder:text-slate-400"
                     ></textarea>
                   </div>
                 </div>
@@ -523,7 +523,7 @@ export default function SellToShowroomPage() {
 
                 {/* Upload Dropzone / Button */}
                 <div className="flex flex-wrap items-center gap-3">
-                  <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-none shadow-md transition-all cursor-pointer">
+                  <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-md shadow-md transition-all cursor-pointer">
                     <Upload className="w-4 h-4" />
                     <span>Pilih & Tambah Foto Kendaraan</span>
                     <input
@@ -575,7 +575,7 @@ export default function SellToShowroomPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 rounded-none shadow-md tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-60"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm py-3.5 px-6 rounded-md shadow-md tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-60"
                 >
                   {loading ? (
                     <>

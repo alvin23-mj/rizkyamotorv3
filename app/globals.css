@@ -13,21 +13,8 @@
 *,
 *::before,
 *::after {
-  border-radius: 0px !important;
   font-weight: 400 !important;
   text-transform: none !important;
-}
-
-.rounded-sm,
-.rounded-md,
-.rounded-lg,
-.rounded-xl,
-.rounded-2xl,
-.rounded-3xl,
-.rounded-full,
-.rounded-none,
-[class*="rounded-"] {
-  border-radius: 0px !important;
 }
 
 /* Enforce minimum 14px font size across all text elements */

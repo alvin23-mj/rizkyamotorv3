@@ -231,12 +231,11 @@ export default function SchedulePage() {
 
     return (
       <div
-        className={`relative !rounded-none p-4 sm:p-5 flex flex-col justify-between text-center min-h-[220px] sm:min-h-[260px] h-full transition-all select-none overflow-hidden border border-slate-100 ${
+        className={`relative rounded-md p-4 sm:p-5 flex flex-col justify-between text-center min-h-[220px] sm:min-h-[260px] h-full transition-all select-none overflow-hidden border border-slate-100 ${
           isFull
             ? 'bg-slate-100/90 text-slate-900 shadow-2xs opacity-70 cursor-default'
             : 'bg-white text-slate-900 shadow-md cursor-default'
         }`}
-        style={{ borderRadius: 0 }}
       >
         {/* Top Ticket Stub Header: Time */}
         <div className="pb-3 border-b-2 border-dashed border-slate-200/80 relative">
@@ -253,22 +252,19 @@ export default function SchedulePage() {
         <div className="py-2.5 sm:py-3 flex justify-center">
           {isFull ? (
             <span
-              className="bg-slate-200 text-slate-700 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
-              style={{ borderRadius: 0 }}
+              className="bg-slate-200 text-slate-700 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 rounded-md tracking-wider uppercase"
             >
               Sudah Penuh
             </span>
           ) : slotBookings.length > 0 ? (
             <span
-              className="bg-amber-50 text-amber-700 border border-amber-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
-              style={{ borderRadius: 0 }}
+              className="bg-amber-50 text-amber-700 border border-amber-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 rounded-md tracking-wider uppercase"
             >
               Dipesan
             </span>
           ) : (
             <span
-              className="bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 !rounded-none tracking-wider uppercase"
-              style={{ borderRadius: 0 }}
+              className="bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-1 rounded-md tracking-wider uppercase"
             >
               Tersedia
             </span>
