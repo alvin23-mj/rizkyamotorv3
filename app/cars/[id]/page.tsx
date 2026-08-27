@@ -462,8 +462,8 @@ export default function CarDetailPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-3">
+              {/* Action Buttons: Kiri Abu-abu, Kanan Solid */}
+              <div className="grid grid-cols-2 gap-3 pt-1">
                 <button
                   onClick={() => {
                     if (!session) {
@@ -473,19 +473,19 @@ export default function CarDetailPage() {
                     }
                     setBookingModalOpen(true);
                   }}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center transition-all cursor-pointer"
+                  className="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300/80 font-bold text-xs py-3.5 px-2.5 sm:px-4 rounded-md shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center text-center transition-all cursor-pointer"
                 >
-                  <span>Booking Unit & Jadwalkan Test Drive</span>
+                  <span>Booking & Test Drive</span>
                 </button>
 
                 <a
                   href={`https://wa.me/${(settings?.whatsapp || settings?.phone || '6281299887766').replace(/[^0-9]/g, '')}?text=${waText}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-3.5 px-2.5 sm:px-4 rounded-md shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-1.5 text-center transition-all cursor-pointer"
                 >
-                  <PhoneCall className="w-4 h-4" />
-                  <span>Hubungi Sales Showroom (WhatsApp)</span>
+                  <PhoneCall className="w-4 h-4 shrink-0" />
+                  <span>WhatsApp Sales</span>
                 </a>
               </div>
             </div>
