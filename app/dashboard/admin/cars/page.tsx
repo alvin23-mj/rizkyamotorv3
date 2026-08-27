@@ -362,53 +362,8 @@ export default function AdminCarCrudPage() {
         />
       )}
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0">
-            <CarFront className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Total Inventori</p>
-            <p className="text-xl font-bold text-slate-900">{totalUnits} Unit</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
-            <CheckCircle2 className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Mobil Tersedia</p>
-            <p className="text-xl font-bold text-slate-900">{availableUnits} Unit</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-            <Tag className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Mobil Terjual</p>
-            <p className="text-xl font-bold text-slate-900">{soldUnits} Unit</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-            <Building2 className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500">Nilai Stok Aktif</p>
-            <p className="text-base font-bold text-slate-900 truncate">
-              {formatRupiah(totalValue)}
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Filters and Search Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white p-4 rounded-md border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
         {/* Search */}
         <div className="relative w-full md:w-96">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -417,7 +372,7 @@ export default function AdminCarCrudPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari judul, merek, atau model..."
-            className="w-full text-sm pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900"
+            className="w-full text-sm pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900"
           />
         </div>
 
@@ -432,7 +387,7 @@ export default function AdminCarCrudPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
               <option value="AVAILABLE">Tersedia Saja</option>
               <option value="ALL">Semua Status (Tersedia, Dipesan, Terjual)</option>
@@ -446,7 +401,7 @@ export default function AdminCarCrudPage() {
             <select
               value={brandFilter}
               onChange={(e) => setBrandFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
               <option value="ALL">Semua Merek</option>
               {uniqueBrands.map((b) => (
@@ -462,7 +417,7 @@ export default function AdminCarCrudPage() {
             <select
               value={bodyTypeFilter}
               onChange={(e) => setBodyTypeFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
               <option value="ALL">Semua Bodi</option>
               {uniqueBodyTypes.map((b) => (
@@ -478,7 +433,7 @@ export default function AdminCarCrudPage() {
             <select
               value={transmissionFilter}
               onChange={(e) => setTransmissionFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
               <option value="ALL">Semua Transmisi</option>
               {uniqueTransmissions.map((t) => (
@@ -494,7 +449,7 @@ export default function AdminCarCrudPage() {
             <select
               value={fuelTypeFilter}
               onChange={(e) => setFuelTypeFilter(e.target.value)}
-              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
+              className="text-sm pl-3.5 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 font-medium appearance-none cursor-pointer"
             >
               <option value="ALL">Semua Bahan Bakar</option>
               {uniqueFuelTypes.map((f) => (
@@ -509,183 +464,204 @@ export default function AdminCarCrudPage() {
           <button
             onClick={loadCars}
             title="Refresh Data"
-            className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* CRUD Data Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden w-full">
-        {loading ? (
-          <div className="p-12 text-center text-slate-400 space-y-3">
-            <Loader2 className="w-7 h-7 animate-spin mx-auto text-slate-600" />
-            <p className="text-sm font-medium">Memuat data mobil showroom...</p>
-          </div>
-        ) : filteredCars.length === 0 ? (
-          <div className="p-12 text-center text-slate-500 space-y-2">
-            <CarFront className="w-12 h-12 text-slate-300 mx-auto" />
-            <p className="text-base font-bold text-slate-800">Tidak ada mobil ditemukan</p>
-            <p className="text-sm text-slate-400">Coba ubah kata kunci pencarian atau filter yang aktif.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto w-full">
-            <table className="w-full text-left text-sm text-slate-700">
-              <thead className="bg-slate-50 border-b border-slate-200 font-bold text-slate-800 uppercase tracking-wider text-xs whitespace-nowrap">
-                <tr>
-                  <th className="px-4 py-4">Foto</th>
-                  <th className="px-4 py-4">Plat Nomor</th>
-                  <th className="px-5 py-4">Nama & Model</th>
-                  <th className="px-4 py-4">Merek</th>
-                  <th className="px-4 py-4">Warna</th>
-                  <th className="px-4 py-4">Tahun</th>
-                  <th className="px-5 py-4">Harga Cash</th>
-                  <th className="px-4 py-4">Kilometer</th>
-                  <th className="px-4 py-4">Transmisi / BB</th>
-                  <th className="px-4 py-4">Status</th>
-                  <th className="px-5 py-4 text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredCars.map((car) => {
-                  const primaryImg = car.images?.[0]?.url || 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80';
+      {/* Catalog Cards Grid Layout */}
+      {loading ? (
+        <div className="bg-white p-12 text-center text-slate-400 space-y-3 rounded-md border border-slate-200 shadow-xs">
+          <Loader2 className="w-7 h-7 animate-spin mx-auto text-slate-600" />
+          <p className="text-sm font-medium">Memuat data mobil showroom...</p>
+        </div>
+      ) : filteredCars.length === 0 ? (
+        <div className="bg-white p-12 text-center text-slate-500 space-y-2 rounded-md border border-slate-200 shadow-xs">
+          <CarFront className="w-12 h-12 text-slate-300 mx-auto" />
+          <p className="text-base font-bold text-slate-800">Tidak ada mobil ditemukan</p>
+          <p className="text-sm text-slate-400">Coba ubah kata kunci pencarian atau filter yang aktif.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+          {filteredCars.map((car) => {
+            const primaryImg =
+              car.images?.[0]?.url ||
+              'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80';
 
-                  return (
-                    <tr key={car.id} className="hover:bg-slate-50/80 transition-colors">
-                      {/* Foto */}
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="w-16 h-12 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-slate-200 shadow-xs">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={primaryImg}
-                            alt={car.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </td>
+            return (
+              <div
+                key={car.id}
+                className="group bg-white rounded-md border-0 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden justify-between"
+              >
+                <div>
+                  {/* Image Container */}
+                  <div className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden block">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={primaryImg}
+                      alt={car.title}
+                      className="w-full h-full object-cover"
+                    />
 
-                      {/* Plat Nomor (Badge Abu-Abu) */}
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-3 py-1 bg-slate-100 border border-slate-200 text-slate-800 font-mono font-bold text-xs rounded-md shadow-xs uppercase tracking-wider">
-                          {car.plateNumber || 'B 1234 RFS'}
+                    {/* Status Badge Top Left */}
+                    <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
+                      {car.status === 'AVAILABLE' ? (
+                        <span className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs uppercase tracking-wider">
+                          Tersedia
                         </span>
-                      </td>
+                      ) : car.status === 'RESERVED' ? (
+                        <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs uppercase tracking-wider">
+                          Dipesan
+                        </span>
+                      ) : (
+                        <span className="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs uppercase tracking-wider">
+                          Terjual
+                        </span>
+                      )}
 
-                      {/* Nama & Model */}
-                      <td className="px-5 py-4 whitespace-nowrap">
-                        <p className="font-bold text-slate-900 text-sm line-clamp-1">{car.title}</p>
-                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                      {car.isVisible === false && (
+                        <span className="bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs flex items-center gap-1 uppercase tracking-wider">
+                          <EyeOff className="w-3 h-3" />
+                          Katalog OFF
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Plat Nomor Badge Top Right */}
+                    {car.plateNumber && (
+                      <div className="absolute top-2.5 right-2.5 z-10">
+                        <span className="bg-slate-950/80 backdrop-blur-xs text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs uppercase tracking-wider">
+                          {car.plateNumber}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content Container */}
+                  <div className="p-4 space-y-2.5">
+                    {/* Brand & Body Type */}
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold">
+                      <span className="uppercase tracking-wider text-slate-700 font-bold">{car.brand}</span>
+                      <span>{car.bodyType || 'Mobil'}</span>
+                    </div>
+
+                    {/* Title & Model */}
+                    <div>
+                      <h3
+                        className="font-extrabold text-slate-900 text-sm leading-snug line-clamp-1 group-hover:text-slate-700 transition-colors"
+                        title={car.title}
+                      >
+                        {car.title}
+                      </h3>
+                      {car.model && (
+                        <p className="text-xs text-slate-500 truncate mt-0.5">
                           Model: {car.model}
                         </p>
-                      </td>
+                      )}
+                    </div>
 
-                      {/* Merek (Teks Biasa, Tanpa Badge Box) */}
-                      <td className="px-4 py-4 font-semibold text-slate-800 text-xs whitespace-nowrap">
-                        {car.brand}
-                      </td>
+                    {/* Specs Grid */}
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-xs text-slate-600 font-medium">
+                      <div className="truncate">
+                        <span className="text-slate-400 block text-[10px]">Tahun:</span>
+                        <span className="font-bold text-slate-800">{car.year}</span>
+                      </div>
+                      <div className="truncate">
+                        <span className="text-slate-400 block text-[10px]">Kilometer:</span>
+                        <span className="font-bold text-slate-800">{formatNumber(car.mileage)} km</span>
+                      </div>
+                      <div className="truncate">
+                        <span className="text-slate-400 block text-[10px]">Transmisi:</span>
+                        <span className="font-bold text-slate-800">{car.transmission}</span>
+                      </div>
+                      <div className="truncate">
+                        <span className="text-slate-400 block text-[10px]">Bahan Bakar:</span>
+                        <span className="font-bold text-slate-800">{car.fuelType}</span>
+                      </div>
+                    </div>
 
-                      {/* Warna */}
-                      <td className="px-4 py-4 font-medium text-slate-800 text-xs whitespace-nowrap">
-                        {car.color || '-'}
-                      </td>
-
-                      {/* Tahun */}
-                      <td className="px-4 py-4 font-semibold text-slate-800 whitespace-nowrap">{car.year}</td>
-
-                      {/* Harga */}
-                      <td className="px-5 py-4 font-bold text-slate-900 text-sm whitespace-nowrap">
+                    {/* Price */}
+                    <div className="pt-2 border-t border-slate-100">
+                      <span className="text-[10px] text-slate-400 block font-medium">Harga Cash</span>
+                      <span className="text-base font-extrabold text-slate-900">
                         {formatRupiah(car.price)}
-                      </td>
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-                      {/* KM */}
-                      <td className="px-4 py-4 font-medium text-slate-700 whitespace-nowrap">
-                        {formatNumber(car.mileage)}
-                      </td>
+                {/* Action Footer: Status Selector & Action Buttons */}
+                <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+                  {/* Interactive Status Dropdown */}
+                  <select
+                    value={car.status}
+                    onChange={(e) => handleStatusChange(car.id, e.target.value)}
+                    title="Ubah Status Unit"
+                    className="px-2 py-1.5 rounded-md text-xs font-bold border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 cursor-pointer focus:outline-none transition-all shadow-2xs text-left"
+                  >
+                    <option value="AVAILABLE">Tersedia</option>
+                    <option value="RESERVED">Dipesan</option>
+                    <option value="SOLD">Terjual</option>
+                  </select>
 
-                      {/* Transmisi */}
-                      <td className="px-4 py-4 font-medium text-slate-700 whitespace-nowrap">
-                        <div>{car.transmission}</div>
-                        <div className="text-xs text-slate-400">{car.fuelType}</div>
-                      </td>
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {/* Toggle Visibilitas Katalog User */}
+                    <button
+                      onClick={() => handleToggleVisibility(car.id, car.isVisible !== false)}
+                      className={`p-1.5 rounded-md border shadow-xs transition-all cursor-pointer inline-flex items-center justify-center ${
+                        car.isVisible !== false
+                          ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200'
+                          : 'bg-white hover:bg-slate-100 text-slate-400 border-slate-300'
+                      }`}
+                      title={
+                        car.isVisible !== false
+                          ? 'Katalog ON: Klik untuk sembunyikan dari user'
+                          : 'Katalog OFF: Klik untuk tampilkan ke user'
+                      }
+                    >
+                      {car.isVisible !== false ? (
+                        <Eye className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <EyeOff className="w-3.5 h-3.5 text-slate-400" />
+                      )}
+                    </button>
 
-                      {/* Status (Interactive Select Dropdown) */}
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="flex flex-col gap-1 items-start">
-                          <select
-                            value={car.status}
-                            onChange={(e) => handleStatusChange(car.id, e.target.value)}
-                            title="Klik untuk Mengubah Status Unit"
-                            className="w-[105px] px-2 py-1 rounded-md text-xs font-bold border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-800 cursor-pointer focus:outline-none transition-all shadow-2xs"
-                          >
-                            <option value="AVAILABLE">Tersedia</option>
-                            <option value="RESERVED">Dipesan</option>
-                            <option value="SOLD">Terjual</option>
-                          </select>
-                          {car.isVisible === false && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 border border-rose-200 text-rose-700">
-                              <EyeOff className="w-3 h-3 text-rose-500" />
-                              Katalog OFF
-                            </span>
-                          )}
-                        </div>
-                      </td>
+                    {/* Detail Modal */}
+                    <button
+                      onClick={() => handleOpenDetail(car)}
+                      className="p-1.5 bg-white hover:bg-blue-50 text-blue-700 border border-slate-300 hover:border-blue-300 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
+                      title="Lihat Detail Mobil"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-blue-600" />
+                    </button>
 
-                      {/* Aksi (Icon-Only Buttons) */}
-                      <td className="px-5 py-4 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          {/* Toggle Visibilitas Katalog User (On / Off) */}
-                          <button
-                            onClick={() => handleToggleVisibility(car.id, car.isVisible !== false)}
-                            className={`p-2 rounded-md border shadow-xs transition-all cursor-pointer inline-flex items-center justify-center ${
-                              car.isVisible !== false
-                                ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200'
-                                : 'bg-slate-100 hover:bg-slate-200 text-slate-500 border-slate-300'
-                            }`}
-                            title={
-                              car.isVisible !== false
-                                ? 'Katalog ON: Unit Tampil di Katalog User (Klik untuk Sembunyikan)'
-                                : 'Katalog OFF: Unit Disembunyikan dari Katalog User (Klik untuk Tampilkan)'
-                            }
-                          >
-                            {car.isVisible !== false ? (
-                              <Eye className="w-4 h-4 text-emerald-600" />
-                            ) : (
-                              <EyeOff className="w-4 h-4 text-slate-400" />
-                            )}
-                          </button>
+                    {/* Edit */}
+                    <Link
+                      href={`/dashboard/admin/cars/${car.id}/edit`}
+                      className="p-1.5 bg-white hover:bg-amber-50 text-amber-700 border border-slate-300 hover:border-amber-300 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
+                      title="Edit Data Mobil"
+                    >
+                      <Pencil className="w-3.5 h-3.5 text-amber-600" />
+                    </Link>
 
-                          <Link
-                            href={`/dashboard/admin/cars/${car.id}`}
-                            className="p-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
-                            title="Lihat Detail Mobil"
-                          >
-                            <FileText className="w-4 h-4 text-blue-600" />
-                          </Link>
-                          <Link
-                            href={`/dashboard/admin/cars/${car.id}/edit`}
-                            className="p-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
-                            title="Edit Data Mobil"
-                          >
-                            <Pencil className="w-4 h-4 text-amber-600" />
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(car.id, car.title)}
-                            className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
-                            title="Hapus Mobil"
-                          >
-                            <Trash2 className="w-4 h-4 text-rose-600" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                    {/* Delete */}
+                    <button
+                      onClick={() => handleDelete(car.id, car.title)}
+                      className="p-1.5 bg-white hover:bg-rose-50 text-rose-700 border border-slate-300 hover:border-rose-300 rounded-md shadow-xs transition-all cursor-pointer inline-flex items-center justify-center"
+                      title="Hapus Mobil"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* MODAL DETAIL UNIT MOBIL (INTERAKTIF FITUR DARI ATAS KE BAWAH) */}
       {detailModalOpen && selectedCarDetail && (
