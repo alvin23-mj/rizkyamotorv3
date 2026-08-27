@@ -77,7 +77,7 @@ export default function BrandCarousel() {
           <Link
             key={brand.name}
             href={`/cars?brand=${encodeURIComponent(brand.name)}`}
-            className="w-38 sm:w-44 shrink-0 snap-start group/card bg-white py-5 px-4 rounded-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center text-center border-0"
+            className="w-38 sm:w-44 shrink-0 snap-start bg-white py-5 px-4 rounded-md border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1.5 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer"
           >
             <div className="w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center text-slate-900 mb-3 p-1">
               {brand.logoUrl ? (
