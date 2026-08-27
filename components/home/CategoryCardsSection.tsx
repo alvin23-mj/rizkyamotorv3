@@ -72,7 +72,7 @@ export default function CategoryCardsSection() {
             <Link
               key={card.id}
               href={card.href}
-              className="relative w-[280px] h-[230px] shrink-0 snap-start overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl flex flex-col justify-end p-5"
+              className="relative w-[280px] h-[230px] shrink-0 snap-start rounded-md overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl flex flex-col justify-end p-5"
             >
               {/* Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -86,7 +86,7 @@ export default function CategoryCardsSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/10" />
 
               {/* Top Right External Link Icon */}
-              <div className="absolute top-3 right-3 z-10 w-8 h-8 bg-slate-950/60 backdrop-blur-md text-white flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
+              <div className="absolute top-3 right-3 z-10 w-8 h-8 bg-slate-950/60 backdrop-blur-md text-white rounded-md flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
                 <ExternalLink className="w-4 h-4" />
               </div>
 
@@ -109,7 +109,7 @@ export default function CategoryCardsSection() {
             <Link
               key={card.id}
               href={card.href}
-              className="relative w-full h-[280px] lg:h-[320px] overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col justify-end p-6 lg:p-7"
+              className="relative w-full h-[280px] lg:h-[320px] rounded-md overflow-hidden text-left transition-all duration-300 group cursor-pointer border-0 shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col justify-end p-6 lg:p-7"
             >
               {/* Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,7 +123,7 @@ export default function CategoryCardsSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/10" />
 
               {/* Top Right External Link Icon */}
-              <div className="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-950/60 backdrop-blur-md text-white flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
+              <div className="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-950/60 backdrop-blur-md text-white rounded-md flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-slate-950 shadow-md">
                 <ExternalLink className="w-4 h-4" />
               </div>
 
